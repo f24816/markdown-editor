@@ -7,15 +7,36 @@
     "withGlobalTauri": true
   },
   "package": {
-    "productName": "markdown-editor",
-    "version": "0.0.0"
+    "productName": "Editor Documente",
+    "version": "1.0.0"
   },
   "tauri": {
     "allowlist": {
+      "dialog": {
+        "all": true,
+        "ask": true,
+        "confirm": true,
+        "message": true,
+        "open": true,
+        "save": true
+      },
       "all": false,
       "shell": {
         "all": false,
         "open": true
+      },
+      "fs": {
+        "all": false,
+        "copyFile": false,
+        "createDir": false,
+        "exists": false,
+        "readDir": false,
+        "readFile": true,
+        "removeDir": false,
+        "removeFile": false,
+        "renameFile": false,
+        "scope": [],
+        "writeFile": true
       }
     },
     "bundle": {
@@ -40,7 +61,7 @@
       {
         "fullscreen": false,
         "resizable": true,
-        "title": "markdown-editor",
+        "title": "Editor Documente",
         "width": 800,
         "height": 600
       }

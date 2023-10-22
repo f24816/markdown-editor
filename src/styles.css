@@ -6,6 +6,10 @@
     border: 1px solid rgb(91, 91, 91);
 }
 
+#preview-box {
+    border: 1px solid rgb(91, 91, 91);
+}
+
 .cm-s-default { font-size: 14px }
 .cm-s-default { font-family: "Times New Roman", sans-serif; }
 .cm-s-default .cm-header {
