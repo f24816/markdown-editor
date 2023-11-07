@@ -5,21 +5,22 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/2.0.3/marked.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.58.3/mode/markdown/markdown.min.js"></script>
-    <script src="https://unpkg.com/markdown-pdf@11.0.0/dist/markdown-pdf.js"></script>
     <link rel="stylesheet" href="styles.css">
-    <script src="main.js"></script>
   </head>
   </head>
   <body>
     <div id="toolbar">
-      <button onclick="fileDialog()">Open File</button>
-      <button id="bold"><b>B</b></button>
-      <button id="preview"><b>Preview</b></button>
-      <!-- Add more buttons as needed -->
+      <button onclick="selectFileDialog()">Open File</button>
+      <button onclick="saveFileDialog()">Save File</button>
+      <button id="btn-bold"><b>B</b></button>
+      <button id="btn-italic"><b>I</b></button>
+      <button id="btn-code"><b><></b></button>
+      <!-- Add: size dropdown -->
+      <button id="btn-preview"><b>Preview</b></button>
     </div>
-    <div id="preview-box">
-      <!-- Preview will be rendered here -->
+    <div id="preview">
     </div>
     <textarea id="editor"></textarea>
   </body>
+  <script src="main.js"></script>
 </html>

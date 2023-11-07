@@ -3,15 +3,19 @@
 }
 
 .CodeMirror {
-    border: 1px solid rgb(91, 91, 91);
+    box-shadow: 2px 2px 6px 2px #31313133;
+    padding: 20px;
 }
 
-#preview-box {
-    border: 1px solid rgb(91, 91, 91);
+#preview {
+    box-shadow: 2px 2px 6px 2px #31313133;
+    padding: 20px;
+    font-family: "Arial", sans-serif;
+    font-size: 18px;
 }
 
-.cm-s-default { font-size: 14px }
-.cm-s-default { font-family: "Times New Roman", sans-serif; }
+.cm-s-default { font-size: 18px }
+.cm-s-default { font-family: "Arial", sans-serif; }
 .cm-s-default .cm-header {
     color: black;
     font-weight: normal;
