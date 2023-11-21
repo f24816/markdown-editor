@@ -35,8 +35,14 @@
         "removeDir": false,
         "removeFile": false,
         "renameFile": false,
-        "scope": [],
+        "scope": ["$TEMP/*", "$APP/*"],
         "writeFile": true
+      },
+      "path": {
+        "all": true
+      },
+      "os": {
+        "all": true
       }
     },
     "bundle": {
@@ -62,8 +68,9 @@
         "fullscreen": false,
         "resizable": true,
         "title": "Editor Documente",
-        "width": 800,
-        "height": 600
+        "width": 860,
+        "height": 800,
+        "maximized": true
       }
     ]
   }

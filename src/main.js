@@ -2,8 +2,11 @@
 const { open } = window.__TAURI__.dialog
 const { save } = window.__TAURI__.dialog
 const { readTextFile } = window.__TAURI__.fs
-const { writeTextFile, BaseDirectory } = window.__TAURI__.fs
+const { writeFile, writeTextFile, BaseDirectory } = window.__TAURI__.fs
+const { resolveResource } = window.__TAURI__.path
+const { invoke } = window.__TAURI__.tauri
 
+const { tempdir } = window.__TAURI__.os
 
 // Establsih global variables
 var preview_mode = false;
@@ -17,26 +20,95 @@ marked.setOptions({
 document.getElementById('btn-preview').addEventListener('click', function() {
   if (preview_mode) {
     preview_mode = false;
-    document.getElementById('btn-preview').innerHTML = '<b>Preview</b>';
+    document.getElementById('btn-preview').innerHTML = 'Preview';
     document.getElementById('preview').style.display = 'none';
     editor.getWrapperElement().style.display = 'block';
   } else {
     preview_mode = true;
-    document.getElementById('btn-preview').innerHTML = '<b>Edit</b>';
+    document.getElementById('btn-preview').innerHTML = 'Edit';
     document.getElementById('preview').innerHTML = marked(editor.getValue());
     document.getElementById('preview').style.display = 'block';
     editor.getWrapperElement().style.display = 'none';
   }
 });
 
+
+// BUG: We'll have to compile to preview in the background beforehand.
+
+// Get HTML from preview to send to the PDF renderer.
+document.getElementById('btn-export').addEventListener('click', function() {
+  var element = document.getElementById('preview');
+  console.log(element.outerHTML);
+
+  async function getTempDir() {
+    try {
+      const tempDirPath = await tempdir();
+      let tempFilePath = `${tempDirPath}file.html`;
+      console.log(tempFilePath);
+
+      // Open file save dialog
+      const selection = save({
+        filters: [{
+          extensions: ['pdf'], name: "*"
+        }]
+      })
+      console.log(await selection); // Comes as a promise
+
+      // Save .html file
+      const createDataFile = async () => {
+        try {
+          await writeFile(
+            {
+              contents: element.outerHTML,
+              path: tempFilePath
+            },
+            {
+              dir: BaseDirectory.Temp
+            }
+          );
+        } catch (e) { console.log(e); }}; // Some boring error handling.
+      createDataFile();
+
+      // Invoke the command
+      invoke('generate_pdf', { input: tempFilePath, output: await selection })
+
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+
+  getTempDir();
+
+
+  // const createDataFile = async () => {
+  //   try {
+  //     await writeFile(
+  //       {
+  //         contents: "hello",
+  //         path: tempFilePath
+  //       },
+  //       {
+  //         dir: BaseDirectory.Temp
+  //       }
+  //     );
+  //   } catch (e) { console.log(e); }}; // Some boring error handling.
+  // createDataFile();
+
+
+
+  // Send both locations tot the export function in Rust
+
+});
+
 // Create codemirror editor
 var editor = CodeMirror.fromTextArea(document.getElementById('editor'), {
   lineNumbers: false,
+  lineWrapping: true,
   mode: 'markdown'
 
 });
 
-editor.setSize("100%", "100%")
+editor.setSize("800", "100%")
 
 // Select file
 function selectFileDialog() {

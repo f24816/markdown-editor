@@ -2,14 +2,47 @@
     height: 300px;
 }
 
+body {
+    background-color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+h1 {
+    margin-top: 0;
+}
+
+button {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: rgb(241, 241, 241); /* Green */
+    border: 1px solid #1e1c1c;
+    color: black;
+    padding: 8px 26px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+}
+
+#toolbar {
+    padding-bottom: 10px;
+}
+
+#preview {
+    display: none;
+}
+
 .CodeMirror {
-    box-shadow: 2px 2px 6px 2px #31313133;
+    box-shadow: 1px 1px 2px 2px #15151533;
     padding: 20px;
 }
 
 #preview {
-    box-shadow: 2px 2px 6px 2px #31313133;
-    padding: 20px;
+    width: 800px;
+    background-color: white;
+    box-shadow: 1px 1px 2px 2px #15151533;
+    padding: 30px;
     font-family: "Arial", sans-serif;
     font-size: 18px;
 }

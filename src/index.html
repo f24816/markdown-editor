@@ -9,18 +9,20 @@
   </head>
   </head>
   <body>
-    <div id="toolbar">
-      <button onclick="selectFileDialog()">Open File</button>
-      <button onclick="saveFileDialog()">Save File</button>
-      <button id="btn-bold"><b>B</b></button>
-      <button id="btn-italic"><b>I</b></button>
-      <button id="btn-code"><b><></b></button>
-      <!-- Add: size dropdown -->
-      <button id="btn-preview"><b>Preview</b></button>
+    <div class="centered">
+      <div id="toolbar">
+        <button onclick="selectFileDialog()">Open File</button>
+        <button onclick="saveFileDialog()">Save File</button>
+        <button id="btn-export">Export</button>
+        <button id="btn-bold"><b>B</b></button>
+        <button id="btn-italic"><b>I</b></button>
+        <button id="btn-code"><b><></b></button>
+        <!-- Add: size dropdown -->
+        <button id="btn-preview">Preview</button>
+      </div>
+      <div id="preview"></div>
+      <textarea id="editor"></textarea>
     </div>
-    <div id="preview">
-    </div>
-    <textarea id="editor"></textarea>
   </body>
   <script src="main.js"></script>
 </html>

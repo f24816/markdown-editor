@@ -5,10 +5,10 @@
 
 ## To Do
 - [x] functionalitate de salvare fisier
-- [ ] set word warp
-- [ ] set rezolution and aspect ratio
-- [ ] formatare avanasată
-- [ ] statistici (word count, character count)
-- [ ] homepage cu fisiere recente si create new file
-- [ ] CSS si formatare
+- [x] set word warp
+- [x] resolution and aspect ratio
 - [ ] export in pdf
+- [ ] stats (word count, character count)
+- [ ] homepage cu fisiere recente si create new file
+- [ ] CSS styling
+- [ ] formatare avanasată
