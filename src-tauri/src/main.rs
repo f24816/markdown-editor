@@ -8,7 +8,6 @@ fn main() {
         .expect("error while running tauri application");
 }
 
-
 #[tauri::command]
 fn generate_pdf(input: &str, output: &str) {
     use html2pdf::html_to_pdf;

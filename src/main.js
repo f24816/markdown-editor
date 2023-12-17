@@ -16,6 +16,8 @@ marked.setOptions({
   breaks: true,
 });
 
+
+
 // Toggle preview mode
 document.getElementById('btn-preview').addEventListener('click', function() {
   if (preview_mode) {
@@ -32,11 +34,9 @@ document.getElementById('btn-preview').addEventListener('click', function() {
   }
 });
 
-
-// BUG: We'll have to compile to preview in the background beforehand.
-
 // Get HTML from preview to send to the PDF renderer.
 document.getElementById('btn-export').addEventListener('click', function() {
+  document.getElementById('preview').innerHTML = marked(editor.getValue());
   var element = document.getElementById('preview');
   console.log(element.outerHTML);
 
@@ -79,25 +79,6 @@ document.getElementById('btn-export').addEventListener('click', function() {
 
   getTempDir();
 
-
-  // const createDataFile = async () => {
-  //   try {
-  //     await writeFile(
-  //       {
-  //         contents: "hello",
-  //         path: tempFilePath
-  //       },
-  //       {
-  //         dir: BaseDirectory.Temp
-  //       }
-  //     );
-  //   } catch (e) { console.log(e); }}; // Some boring error handling.
-  // createDataFile();
-
-
-
-  // Send both locations tot the export function in Rust
-
 });
 
 // Create codemirror editor
@@ -123,6 +104,10 @@ function selectFileDialog() {
   selection.then(result => {
       const promise = readTextFile(result);
       promise.then((response) => {
+        preview_mode = false;
+        document.getElementById('btn-preview').innerHTML = 'Preview';
+        document.getElementById('preview').style.display = 'none';
+        editor.getWrapperElement().style.display = 'block';
         editor.setValue(response);
       }).catch((error) => {
         console.error(error);
@@ -240,4 +225,9 @@ editor.addKeyMap({
   '`': function(cm) {
     codeText(cm)
   }
+});
+
+// Word counter update
+editor.on('change', function(instance) {
+  document.getElementById('word-count').innerHTML = instance.getValue().split(/\s+/).length;
 });

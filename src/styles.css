@@ -1,9 +1,12 @@
 .CodeMirror {
-    height: 300px;
+    min-height: 1169px !important;
+    width: 827px !important;
+    border-radius: 4px;
 }
 
 body {
-    background-color: #333;
+    /* background-color: #333; */
+    background-image: url("https://www.transparenttextures.com/patterns/45-degree-fabric-light.png");
     display: flex;
     justify-content: center;
     align-items: center;
@@ -16,13 +19,16 @@ h1 {
 button {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: rgb(241, 241, 241); /* Green */
-    border: 1px solid #1e1c1c;
+    border: 0;
+    box-shadow: 0px 0px 2px 1px #15151533;
     color: black;
+    background-color: white;
     padding: 8px 26px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
     font-size: 12px;
+    border-radius: 4px;
 }
 
 #toolbar {
@@ -34,17 +40,24 @@ button {
 }
 
 .CodeMirror {
-    box-shadow: 1px 1px 2px 2px #15151533;
-    padding: 20px;
+    box-shadow: 0px 0px 2px 1px #15151533;
+    padding: 30px;
+    overflow: hidden;
 }
 
 #preview {
-    width: 800px;
+    min-height: 1169px;
+    width: 827px;
     background-color: white;
-    box-shadow: 1px 1px 2px 2px #15151533;
+    box-shadow: 0px 0px 2px 1px #15151533;
     padding: 30px;
     font-family: "Arial", sans-serif;
     font-size: 18px;
+    border-radius: 4px;
+}
+
+.CodeMirror-scroll {
+    overflow: hidden !important;
 }
 
 .cm-s-default { font-size: 18px }
@@ -53,4 +66,13 @@ button {
     color: black;
     font-weight: normal;
     font-size: 24px;
+}
+
+#info {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    padding: 10px 20px;
+    font-size: 12px;
+    color: #999;
 }

@@ -5,7 +5,6 @@ Acesta este un editor de documente făcut cu [Tauri](https://tauri.studio/en/), 
 ## Cerințe preliminare
 
 - Instalați [Rust](https://www.rust-lang.org/tools/install)
-- După instalare instalați un `toolchain` pentru Rust cu `rustup toolchain install stable`.
 
 ## Rulare
 
