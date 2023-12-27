@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/2.0.3/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.58.3/mode/markdown/markdown.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+    <meta charset="utf-8">
+  </head>
+  </head>
+  <body>
+    <div class="centered">
+      <div id="toolbar">
+        <button onclick="selectFileDialog()">Open File</button>
+        <button onclick="saveFileDialog()">Save File</button>
+        <button id="btn-export">Export</button>
+        <button id="btn-bold"><b>B</b></button>
+        <button id="btn-italic"><b>I</b></button>
+        <button id="btn-code"><b><></b></button>
+        <button id="btn-preview">Preview</button>
+      </div>
+      <div id="preview"></div>
+      <textarea id="editor"></textarea>
+    </div>
+    <div id="info">
+      <p>word count: <span id="word-count">0</span></p>
+    </div>
+  </body>
+  <script src="main.js"></script>
+</html>

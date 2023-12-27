@@ -8,8 +8,13 @@ body {
     /* background-color: #333; */
     background-image: url("https://www.transparenttextures.com/patterns/45-degree-fabric-light.png");
     display: flex;
+    font-family: "Arial", sans-serif;
     justify-content: center;
     align-items: center;
+}
+
+.width-600 {
+    max-width: 600px;
 }
 
 h1 {

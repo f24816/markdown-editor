@@ -1,31 +1,25 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/2.0.3/marked.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.58.3/mode/markdown/markdown.min.js"></script>
-    <link rel="stylesheet" href="styles.css">
-  </head>
-  </head>
-  <body>
-    <div class="centered">
-      <div id="toolbar">
-        <button onclick="selectFileDialog()">Open File</button>
-        <button onclick="saveFileDialog()">Save File</button>
-        <button id="btn-export">Export</button>
-        <button id="btn-bold"><b>B</b></button>
-        <button id="btn-italic"><b>I</b></button>
-        <button id="btn-code"><b><></b></button>
-        <!-- Add: size dropdown -->
-        <button id="btn-preview">Preview</button>
-      </div>
-      <div id="preview"></div>
-      <textarea id="editor"></textarea>
+    <head>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/2.0.3/marked.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.58.3/mode/markdown/markdown.min.js"></script>
+        <link rel="stylesheet" href="styles.css">
+        <meta charset="utf-8">
+    </head>
+    <body>
+    <!-- Wellcome Screen -->
+    <div class="centered width-600">
+        <p></p>
+        <h1>Acesta este un editor care folosește limbajul descriptiv Markdown.</h1>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Markdown-mark.svg/1200px-Markdown-mark.svg.png" alt="Markdown Logo" width="200">
+        <p><i>Cum funcționează?</i></p>
+        <p>În editor poți scrie text folosind formatul <b>Markdown</b>, iar în previzualizare vei vedea cum va arăta textul după ce va fi exportat. Poți să exporți textul editat în format PDF.</p>
+        <div id="toolbar">
+            <button onclick="selectFileDialog()">Open File</button>
+            <button onclick="window.location.href='editor.html';">New File</button>
+        </div>
     </div>
-    <div id="info">
-      <p>word count: <span id="word-count">0</span></p>
-    </div>
-  </body>
-  <script src="main.js"></script>
+</body>
 </html>
