@@ -7,8 +7,9 @@
 - [ x ] word count
 - [ x ] CSS styling
 - [ x ] homepage
-- [  ] save notifications
-- [  ] bold/italic text better
-- [  ] size dropdown
+- [ x ] inject css in pdf
+- [ x ] save notifications
+
+## Improvements
 - [  ] improved architecture
-- [  ] inject css in pdf
+- [  ] bold/italic text better

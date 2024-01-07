@@ -12,19 +12,25 @@
   <body>
     <div class="centered">
       <div id="toolbar">
-        <button onclick="selectFileDialog()">Open File</button>
-        <button onclick="saveFileDialog()">Save File</button>
-        <button id="btn-export">Export</button>
+        <button onclick="selectFileDialog()">Deschide Fișier</button>
+        <button onclick="saveFileDialog()">Salvează</button>
+        <button id="btn-export">Export PDF</button>
         <button id="btn-bold"><b>B</b></button>
         <button id="btn-italic"><b>I</b></button>
         <button id="btn-code"><b><></b></button>
-        <button id="btn-preview">Preview</button>
+        <button id="btn-strike"><s>A</s></button>
+        <button id="btn-link">🔗</button>
+        <button id="btn-image">🖼️</button>
+        <button id="btn-preview">Previzualizează</button>
       </div>
       <div id="preview"></div>
       <textarea id="editor"></textarea>
     </div>
     <div id="info">
-      <p>word count: <span id="word-count">0</span></p>
+      <p>Cuvinte: <span id="word-count">0</span></p>
+    </div>
+    <div id="popup">
+      <p>📝 Am salvat fișierul PDF.</p>
     </div>
   </body>
   <script src="main.js"></script>

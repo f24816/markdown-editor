@@ -16,29 +16,50 @@ marked.setOptions({
   breaks: true,
 });
 
-
-
 // Toggle preview mode
 document.getElementById('btn-preview').addEventListener('click', function() {
   if (preview_mode) {
     preview_mode = false;
-    document.getElementById('btn-preview').innerHTML = 'Preview';
+    document.getElementById('btn-preview').innerHTML = 'Previzualizează';
     document.getElementById('preview').style.display = 'none';
     editor.getWrapperElement().style.display = 'block';
   } else {
     preview_mode = true;
-    document.getElementById('btn-preview').innerHTML = 'Edit';
+    document.getElementById('btn-preview').innerHTML = 'Editează';
     document.getElementById('preview').innerHTML = marked(editor.getValue());
     document.getElementById('preview').style.display = 'block';
     editor.getWrapperElement().style.display = 'none';
   }
 });
 
+// BUG Sometimes it doesn't export the file
+
 // Get HTML from preview to send to the PDF renderer.
 document.getElementById('btn-export').addEventListener('click', function() {
   document.getElementById('preview').innerHTML = marked(editor.getValue());
   var element = document.getElementById('preview');
-  console.log(element.outerHTML);
+
+  begining = `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+  body {
+    font-family: "Arial", sans-serif;
+  }
+  </style>
+</head>
+<body>
+  `
+
+  end = `
+</body>
+</html>
+  `
+
+  var html = begining + element.outerHTML + end;
+  console.log(html);
 
   async function getTempDir() {
     try {
@@ -59,7 +80,7 @@ document.getElementById('btn-export').addEventListener('click', function() {
         try {
           await writeFile(
             {
-              contents: element.outerHTML,
+              contents: html,
               path: tempFilePath
             },
             {
@@ -71,6 +92,21 @@ document.getElementById('btn-export').addEventListener('click', function() {
 
       // Invoke the command
       invoke('generate_pdf', { input: tempFilePath, output: await selection })
+        .then((res) => {
+          console.log(res);
+          document.getElementById('popup').style.opacity = '1';
+          document.getElementById('popup').style.transition = 'none';
+
+          // Wait 1 second
+          setTimeout(function()
+          {
+            document.getElementById('popup').style.transition = 'opacity 1s ease-out';
+            document.getElementById('popup').style.opacity = '0';
+          }, 2000);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
 
     } catch (error) {
       console.error('Error:', error);
@@ -90,6 +126,17 @@ var editor = CodeMirror.fromTextArea(document.getElementById('editor'), {
 });
 
 editor.setSize("800", "100%")
+
+// ###### Here is where the magic happens ######
+
+var data = localStorage.getItem('open');
+
+console.log(data); // Output: value
+
+// check if data is true and select file
+if (data == 'true') {
+  selectFileDialog();
+}
 
 // Select file
 function selectFileDialog() {
@@ -121,29 +168,29 @@ function selectFileDialog() {
 // Save file
 function saveFileDialog() {
 
-  const selection = save({
-    filters: [{
-      extensions: ['md', 'mdx'], name: "*"
-    }]
-  })
+const selection = save({
+  filters: [{
+  extensions: ['md', 'mdx'], name: "*"
+  }]
+})
 
-  // Read selected file
-  selection.then(result => { // result is the path chosen by the user
-    // Write file to location selected
-    const promise = writeTextFile({
-      path: result,
-      contents: editor.getValue(),
-      directory: BaseDirectory.Current
-    });
-    promise.then((response) => {
-      console.log(response);
-    }).catch((error) => {
-      console.error(error);
-    });
-    console.log(result)
-  }).catch(err => {
-    console.error(err)
-  })
+// Read selected file
+selection.then(result => { // result is the path chosen by the user
+  // Write file to location selected
+  const promise = writeTextFile({
+  path: result,
+  contents: editor.getValue(),
+  directory: BaseDirectory.Current
+  });
+  promise.then((response) => {
+  console.log(response);
+  }).catch((error) => {
+  console.error(error);
+  });
+  console.log(result)
+}).catch(err => {
+  console.error(err)
+})
 }
 
 // Bold
@@ -153,6 +200,9 @@ document.getElementById('btn-bold').addEventListener('click', function() {
 
 function boldText(editor) {
   var selection = editor.getSelection();
+  if (selection.length < 1) {
+    return;
+  }
   var cursor = editor.getCursor();
   if (selection.startsWith('**') && selection.endsWith('**')) {
       // Remove bold
@@ -180,6 +230,9 @@ document.getElementById('btn-italic').addEventListener('click', function() {
 
 function italicText(editor) {
   var selection = editor.getSelection();
+  if (selection.length < 1) {
+    return;
+  }
   var cursor = editor.getCursor();
   if (selection.startsWith('*') && selection.endsWith('*')) {
       // Remove bold
@@ -200,13 +253,16 @@ editor.addKeyMap({
   }
 });
 
-// Italic
+// Code
 document.getElementById('btn-code').addEventListener('click', function() {
   codeText(editor)
 });
 
 function codeText(editor) {
   var selection = editor.getSelection();
+  if (selection.length < 1) {
+    return;
+  }
   var cursor = editor.getCursor();
   if (selection.startsWith('`') && selection.endsWith('`')) {
       // Remove bold
@@ -224,6 +280,167 @@ function codeText(editor) {
 editor.addKeyMap({
   '`': function(cm) {
     codeText(cm)
+  }
+});
+
+// Strikethrough
+document.getElementById('btn-strike').addEventListener('click', function() {
+  strikethroughText(editor)
+});
+
+function strikethroughText(editor) {
+  var selection = editor.getSelection();
+  if (selection.length < 1) {
+    return;
+  }
+  var cursor = editor.getCursor();
+  if (selection.startsWith('~~') && selection.endsWith('~~')) {
+      // Remove bold
+      editor.replaceSelection(selection.slice(2, -2));
+      // Adjust cursor position
+      editor.setCursor({line: cursor.line, ch: cursor.ch - 2});
+  } else {
+      // Add bold
+      editor.replaceSelection('~~' + selection + '~~');
+      // Adjust cursor position
+      editor.setCursor({line: cursor.line, ch: cursor.ch + 2});
+  }
+}
+
+editor.addKeyMap({
+  'Ctrl-Alt-S': function(cm) {
+    strikethroughText(cm)
+  }
+});
+
+// Link
+document.getElementById('btn-link').addEventListener('click', function() {
+  linkText(editor)
+});
+
+function linkText(editor) {
+  // Insert link text
+  var selection = editor.getSelection();
+  if (selection.length < 1) {
+    return;
+  }
+  var cursor = editor.getCursor();
+
+  // Insert link URL
+  var link = prompt('Enter link URL', 'https://');
+  if (link == null) {
+    return;
+  }
+
+  // Insert link
+  editor.replaceSelection('[' + selection + '](' + link + ')');
+  // Adjust cursor position
+  editor.setCursor({line: cursor.line, ch: cursor.ch + 1});
+}
+
+// Image
+document.getElementById('btn-image').addEventListener('click', function() {
+  imageText(editor)
+});
+
+function imageText(editor) {
+  // Insert link text
+  var selection = editor.getSelection();
+  var cursor = editor.getCursor();
+
+  // Insert link URL
+  var link = prompt('Enter image URL', 'https://');
+  if (link == null) {
+    return;
+  }
+
+  // Insert link
+  editor.replaceSelection('![' + selection + '](' + link + ')');
+  // Adjust cursor position
+  editor.setCursor({line: cursor.line, ch: cursor.ch + 1});
+}
+
+// Heading 1
+function h1Text(editor) {
+  var cursor = editor.getCursor();
+  var line = editor.getLine(cursor.line);
+  var output = '# ' + line;
+  editor.replaceRange(output, {line: cursor.line, ch: 0}, {line: cursor.line, ch: line.length});
+}
+
+editor.addKeyMap({
+  'Ctrl-1': function(cm) {
+    h1Text(cm)
+  }
+});
+
+// Heading 2
+function h2Text(editor) {
+  var cursor = editor.getCursor();
+  var line = editor.getLine(cursor.line);
+  var output = '## ' + line;
+  editor.replaceRange(output, {line: cursor.line, ch: 0}, {line: cursor.line, ch: line.length});
+}
+
+editor.addKeyMap({
+  'Ctrl-2': function(cm) {
+    h2Text(cm)
+  }
+});
+
+// Heading 3
+function h3Text(editor) {
+  var cursor = editor.getCursor();
+  var line = editor.getLine(cursor.line);
+  var output = '### ' + line;
+  editor.replaceRange(output, {line: cursor.line, ch: 0}, {line: cursor.line, ch: line.length});
+}
+
+editor.addKeyMap({
+  'Ctrl-3': function(cm) {
+    h3Text(cm)
+  }
+});
+
+// Heading 4
+function h4Text(editor) {
+  var cursor = editor.getCursor();
+  var line = editor.getLine(cursor.line);
+  var output = '#### ' + line;
+  editor.replaceRange(output, {line: cursor.line, ch: 0}, {line: cursor.line, ch: line.length});
+}
+
+editor.addKeyMap({
+  'Ctrl-4': function(cm) {
+    h4Text(cm)
+  }
+});
+
+// Heading 5
+function h5Text(editor) {
+  var cursor = editor.getCursor();
+  var line = editor.getLine(cursor.line);
+  var output = '##### ' + line;
+  editor.replaceRange(output, {line: cursor.line, ch: 0}, {line: cursor.line, ch: line.length});
+}
+
+editor.addKeyMap({
+  'Ctrl-5': function(cm) {
+    h5Text(cm)
+  }
+});
+
+// Heading 6
+function h6Text(editor) {
+  var cursor = editor.getCursor();
+  var line = editor.getLine(cursor.line);
+  var output = '###### ' + line;
+  editor.replaceRange(output, {line: cursor.line, ch: 0}, {line: cursor.line, ch: line.length});
+}
+
+editor.addKeyMap({
+  'Ctrl-6': function(cm) {
+    h6Text(cm)
   }
 });
 

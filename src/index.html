@@ -17,9 +17,20 @@
         <p><i>Cum funcționează?</i></p>
         <p>În editor poți scrie text folosind formatul <b>Markdown</b>, iar în previzualizare vei vedea cum va arăta textul după ce va fi exportat. Poți să exporți textul editat în format PDF.</p>
         <div id="toolbar">
-            <button onclick="selectFileDialog()">Open File</button>
-            <button onclick="window.location.href='editor.html';">New File</button>
+            <!-- Butonul de Open File nu functioneaza -->
+            <button onclick="selectFileDialogHome()">Deschide Fișier</button>
+            <button onclick="newFileDialogHome()">Fișier Nou</button>
         </div>
     </div>
 </body>
+    <script>
+        function selectFileDialogHome() {
+            localStorage.setItem('open', true);
+            window.location.href = 'editor.html';
+        }
+        function newFileDialogHome() {
+            localStorage.setItem('open', false);
+            window.location.href = 'editor.html';
+        }
+    </script>
 </html>
