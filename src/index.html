@@ -10,16 +10,41 @@
     </head>
     <body>
     <!-- Wellcome Screen -->
-    <div class="centered width-600">
-        <p></p>
-        <h1>Acesta este un editor care folosește limbajul descriptiv Markdown.</h1>
+    <div class="paper centered width-600">
+        <button type="button" class='button-min bilanguage' onclick='changelang()'
+        data-en='🌏 Română'
+        data-ro='🌏 English'>
+        </button>
+        <button class='button-min bilanguage'
+        data-en='About'
+        data-ro='Despre'>
+        </button>
+        <h1 class='bilanguage'
+        data-en='Document Editor'
+        data-ro='Editor Document'>
+        </h1>
+        <p class='bilanguage'
+        data-en='Wellcome!'
+        data-ro='Bine ai venit!'>
+        </p>
+        <p class='bilanguage'
+        data-en='This is an editor that uses the descriptive language Markdown.'
+        data-ro="Acesta este un editor care folosește limbajul descriptiv Markdown.">
+        </p>
         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Markdown-mark.svg/1200px-Markdown-mark.svg.png" alt="Markdown Logo" width="200">
-        <p><i>Cum funcționează?</i></p>
-        <p>În editor poți scrie text folosind formatul <b>Markdown</b>, iar în previzualizare vei vedea cum va arăta textul după ce va fi exportat. Poți să exporți textul editat în format PDF.</p>
-        <div id="toolbar">
+        <p class='bilanguage'
+        data-en='How does it work?'
+        data-ro='Cum funcționează?'>
+        </p>
+        <p class='bilanguage'
+        data-en='In the editor you can write text using the Markdown format, and in the preview you will see how the exported text will look. You can export the edited text in PDF format.'
+        data-ro='În editor poți scrie text folosind formatul Markdown, iar în previzualizare vei vedea cum va arăta textul ropă ce va fi exportat. Poți să exporți textul editat în format PDF.'>
+        </p>
+        <br>
+        <div id="toolbar-m">
             <!-- Butonul de Open File nu functioneaza -->
-            <button onclick="selectFileDialogHome()">Deschide Fișier</button>
-            <button onclick="newFileDialogHome()">Fișier Nou</button>
+            <button onclick="selectFileDialogHome()" class='bilanguage' data-en='Open File' data-ro='Deschide Fișier'></button>
+            <button onclick="newFileDialogHome()" class='bilanguage' data-en='New File' data-ro='Fișier Nou'></button>
         </div>
     </div>
 </body>
@@ -33,4 +58,17 @@
             window.location.href = 'editor.html';
         }
     </script>
+    <script src="language.js"></script>
+    <style>
+        h1 {
+            padding-top: 10px;
+        }
+        .paper {
+            background-color: #e7e7e7;
+            padding: 2rem;
+            box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+            border-radius: 5px;
+            border: 1px solid #d0d0d0;
+        }
+    </style>
 </html>

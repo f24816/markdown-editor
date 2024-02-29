@@ -10,28 +10,58 @@
   </head>
   </head>
   <body>
-    <div class="centered">
+    <div id="tooltips">
+      <button type="button" class='button-min bilanguage' onclick='changelang()' data-en='🌏 Română' data-ro='🌏 English'></button>
+      <button class='button-min bilanguage'
+      data-en='Format'
+      data-ro='Formatează'>
+      </button>
+      <button class='button-min bilanguage'
+      data-en='About'
+      data-ro='Despre'>
+      </button>
+    </div>
+    <div id="info">
+      <!-- <p>Cuvinte: <span id="word-count">0</span></p> -->
+      <p class='bilanguage'
+      data-en=' Words'
+      data-ro=' Cuvinte'><span id="word-count">0</span>
+      </p>
+    </div>
+    <div id="popup">
+      <p class='bilanguage'
+      data-en='📝 The PDF document has been saved!'
+      data-ro='📝 Documentul PDF a fost salvat!'>
+      </p>
+    </div>
+    <div class="centered" style="padding-top: 10px;">
       <div id="toolbar">
-        <button onclick="selectFileDialog()">Deschide Fișier</button>
-        <button onclick="saveFileDialog()">Salvează</button>
+        <button onclick="selectFileDialog()" class='bilanguage'
+        data-en='Open File'
+        data-ro='Deschide Fișier'>
+        </button>
+        <button onclick="saveFileDialog()" class='bilanguage'
+        data-en='Save File'
+        data-ro='Salvează'
+        >
+        </button>
         <button id="btn-export">Export PDF</button>
         <button id="btn-bold"><b>B</b></button>
         <button id="btn-italic"><b>I</b></button>
         <button id="btn-code"><b><></b></button>
         <button id="btn-strike"><s>A</s></button>
-        <button id="btn-link">🔗</button>
-        <button id="btn-image">🖼️</button>
-        <button id="btn-preview">Previzualizează</button>
+        <button id="btn-link">Link</button>
+        <button id="btn-image" class='bilanguage'
+        data-en='Image'
+        data-ro='Poză'
+        >
+        </button>
+        <button id="btn-preview">Previzualizare</button>
       </div>
       <div id="preview"></div>
       <textarea id="editor"></textarea>
     </div>
-    <div id="info">
-      <p>Cuvinte: <span id="word-count">0</span></p>
-    </div>
-    <div id="popup">
-      <p>📝 Am salvat fișierul PDF.</p>
-    </div>
   </body>
   <script src="main.js"></script>
+  <script src="language.js"></script>
 </html>

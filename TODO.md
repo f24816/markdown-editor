@@ -9,7 +9,14 @@
 - [ x ] homepage
 - [ x ] inject css in pdf
 - [ x ] save notifications
+- [  ] keep CSS when exporting to pdf
 
 ## Improvements
-- [  ] improved architecture
-- [  ] bold/italic text better
+- [ x ] bold/italic text better
+- [ x ] language changer
+- [  ] improve word bold/italic
+- [  ] image formating
+- [  ] format lanscape/portrait
+- [  ] theme selection
+- [  ] template selection
+- [  ] page terminators

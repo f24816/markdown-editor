@@ -1,11 +1,14 @@
-# Isaac Newton
+<center><h1>Isaac Newton🔬</h1></center>
 
-Physicist, Mathematician, Cambridge professor.
+<center>Physicist, Mathematician, Cambridge professor.</center>
+
+---
 
 <div id="webaddress">
 <a href="isaac@applesdofall.org">isaac@applesdofall.org</a>
 | <a href="http://en.wikipedia.org/wiki/Isaac_Newton">My wikipedia page</a>
 </div>
+<br>
 
 ## Currently
 

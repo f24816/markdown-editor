@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+
 .CodeMirror {
     min-height: 1169px !important;
     width: 827px !important;
@@ -8,9 +10,11 @@ body {
     /* background-color: #333; */
     background-image: url("https://www.transparenttextures.com/patterns/45-degree-fabric-light.png");
     display: flex;
-    font-family: "Arial", sans-serif;
+    font-family: "Inter", "Arial", sans-serif;
     justify-content: center;
     align-items: center;
+    min-height: 100vh;
+    margin: 0;
 }
 
 .width-600 {
@@ -18,28 +22,60 @@ body {
 }
 
 h1 {
+    font-size: 3rem;
     margin-top: 0;
+    margin-bottom: 0;
+}
+p {
+    margin:0.5rem;
+    margin-left: 0;
+}
+
+img {
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 button {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: "Inter", "Arial", sans-serif;
     border: 0;
     box-shadow: 0px 0px 2px 1px #15151533;
-    color: black;
-    background-color: white;
-    padding: 8px 25px;
+    color: white;
+    background-color: #3b61c9;
+    padding: 8px 22px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
     font-size: 12px;
     border-radius: 4px;
+    cursor: pointer;
+}
+
+.button-min {
+    background-color: #15151500;
+    box-shadow: none;
+    font-size: 13px;
+    color: #444;
+    padding: 8px 10px;
+}
+.button-min:hover {
+    background-color: #15151500;
+    text-decoration: underline;
 }
 
 button:active {
     background-color: #e6e6e6;
 }
+button:hover {
+    background-color: #3045a2;
+}
 
 #toolbar {
+    padding-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+#toolbar-m {
     padding-bottom: 10px;
 }
 
@@ -49,8 +85,13 @@ button:active {
 
 .CodeMirror {
     box-shadow: 0px 0px 2px 1px #15151533;
-    padding: 30px;
+    padding: 60px;
     overflow: hidden;
+}
+
+code {
+    color: #3b61c9;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
 #preview {
@@ -59,7 +100,7 @@ button:active {
     width: 827px;
     background-color: white;
     box-shadow: 0px 0px 2px 1px #15151533;
-    padding: 30px;
+    padding: 60px;
     font-family: "Arial", sans-serif;
     font-size: 18px;
     border-radius: 4px;
@@ -70,31 +111,45 @@ button:active {
 }
 
 .cm-s-default { font-size: 18px }
-.cm-s-default { font-family: "Arial", sans-serif; }
+.cm-s-default { font-family: "Inter", "Arial", sans-serif; }
 .cm-s-default .cm-header {
     color: black;
     font-weight: normal;
     font-size: 24px;
 }
 
+.bilanguage::after {
+    content: attr(data-en);
+}
+button .bilanguage {
+    z-index: 100;
+}
+#tooltips {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 7px 7px;
+}
 #info {
     position: fixed;
     bottom: 0;
     right: 0;
-    padding: 10px 20px;
+    padding: 8px 10px;
     font-size: 13px;
-    color: #000000;
+}
+#btn-preview {
+    display: inline-block;
+    width: 16%;
 }
 #info p {
-    box-shadow: 0px 0px 2px 1px #15151533;
-    background-color: rgb(255, 255, 255);
+    font-weight: bold;
     padding: 10px 16px;
     border-radius: 4px;
 }
 
 #popup {
-    font-family: "Arial", sans-serif;
-    display: block;
+    font-family: "Inter", "Arial", sans-serif;
+    display: none;
     color: #222;
     opacity: 0;
     transition: none;
@@ -105,6 +160,6 @@ button:active {
     background-color: rgb(255, 255, 255);
     padding: 0px 10px;
     border-radius: 4px;
-    border: 2px solid #63e617;
+    border: 2px solid #66cb19;
     box-shadow: 0px 0px 2px 1px #15151533;
 }

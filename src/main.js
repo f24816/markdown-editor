@@ -94,6 +94,7 @@ document.getElementById('btn-export').addEventListener('click', function() {
       invoke('generate_pdf', { input: tempFilePath, output: await selection })
         .then((res) => {
           console.log(res);
+          document.getElementById('popup').style.display = 'block';
           document.getElementById('popup').style.opacity = '1';
           document.getElementById('popup').style.transition = 'none';
 
@@ -103,6 +104,10 @@ document.getElementById('btn-export').addEventListener('click', function() {
             document.getElementById('popup').style.transition = 'opacity 1s ease-out';
             document.getElementById('popup').style.opacity = '0';
           }, 2000);
+          setTimeout(function()
+          {
+            document.getElementById('popup').style.display = 'none';
+          }, 3000);
         })
         .catch((err) => {
           console.error(err);
@@ -199,22 +204,34 @@ document.getElementById('btn-bold').addEventListener('click', function() {
 });
 
 function boldText(editor) {
-  var selection = editor.getSelection();
-  if (selection.length < 1) {
-    return;
-  }
   var cursor = editor.getCursor();
-  if (selection.startsWith('**') && selection.endsWith('**')) {
-      // Remove bold
-      editor.replaceSelection(selection.slice(2, -2));
-      // Adjust cursor position
-      editor.setCursor({line: cursor.line, ch: cursor.ch - 2});
+  var word = editor.findWordAt(cursor);
+  var word_content = editor.getRange(word.anchor, word.head);
+
+  var extendedWord = {
+    anchor: { line: word.anchor.line, ch: Math.max(0, word.anchor.ch - 2) },
+    head: { line: word.head.line, ch: word.head.ch + 2 }
+  };
+
+  var extendedWordText = editor.getRange(extendedWord.anchor, extendedWord.head);
+
+  console.log(extendedWordText);
+
+  if (extendedWordText.startsWith('**') && extendedWordText.endsWith('**')) {
+    console.log('remove bold');
+    // Remove bold
+    rmv = extendedWordText.slice(2, -2);
+    console.log(rmv);
+    editor.replaceRange(rmv, extendedWord.anchor, extendedWord.head);
+    editor.setCursor(cursor.line, cursor.ch - 2);
   } else {
-      // Add bold
-      editor.replaceSelection('**' + selection + '**');
-      // Adjust cursor position
-      editor.setCursor({line: cursor.line, ch: cursor.ch + 2});
+    // Add bold
+    editor.replaceRange('**' + word_content + '**', word.anchor, word.head);
+    editor.setCursor(cursor.line, cursor.ch + 2);
   }
+
+  // BUG: Add exception for when the cursor is at the end of the word
+  // Add exception for selections and handle them diferently
 }
 
 editor.addKeyMap({
@@ -278,7 +295,7 @@ function codeText(editor) {
 }
 
 editor.addKeyMap({
-  '`': function(cm) {
+  'Ctrl-`': function(cm) {
     codeText(cm)
   }
 });
