@@ -10,41 +10,45 @@
     </head>
     <body>
     <!-- Wellcome Screen -->
-    <div class="paper centered width-600">
-        <button type="button" class='button-min bilanguage' onclick='changelang()'
-        data-en='🌏 Română'
-        data-ro='🌏 English'>
-        </button>
-        <button class='button-min bilanguage'
-        data-en='About'
-        data-ro='Despre'>
-        </button>
-        <h1 class='bilanguage'
-        data-en='Document Editor'
-        data-ro='Editor Document'>
-        </h1>
-        <p class='bilanguage'
-        data-en='Wellcome!'
-        data-ro='Bine ai venit!'>
-        </p>
-        <p class='bilanguage'
-        data-en='This is an editor that uses the descriptive language Markdown.'
-        data-ro="Acesta este un editor care folosește limbajul descriptiv Markdown.">
-        </p>
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Markdown-mark.svg/1200px-Markdown-mark.svg.png" alt="Markdown Logo" width="200">
-        <p class='bilanguage'
-        data-en='How does it work?'
-        data-ro='Cum funcționează?'>
-        </p>
-        <p class='bilanguage'
-        data-en='In the editor you can write text using the Markdown format, and in the preview you will see how the exported text will look. You can export the edited text in PDF format.'
-        data-ro='În editor poți scrie text folosind formatul Markdown, iar în previzualizare vei vedea cum va arăta textul ropă ce va fi exportat. Poți să exporți textul editat în format PDF.'>
-        </p>
-        <br>
-        <div id="toolbar-m">
-            <!-- Butonul de Open File nu functioneaza -->
-            <button onclick="selectFileDialogHome()" class='bilanguage' data-en='Open File' data-ro='Deschide Fișier'></button>
-            <button onclick="newFileDialogHome()" class='bilanguage' data-en='New File' data-ro='Fișier Nou'></button>
+    <div class="center-div">
+        <div class="paper centered">
+            <div class="index-actions actions">
+                <img class="language-select" style="padding: 0 !important; margin: 0 !important;" src="icons/translate.svg">
+                <select id="language-select-option">
+                    <option value="ro">English</option>
+                    <option value="en">Romanian</option>
+                </select>
+                <button class='button-min bilanguage'
+                data-en='About'
+                data-ro='Despre'>
+                </button>
+            </div>
+            <h1 class='bilanguage'
+            data-en='Document Editor'
+            data-ro='Editor Document'>
+            </h1>
+            <p class='bilanguage'
+            data-en='Wellcome!'
+            data-ro='Bine ai venit!'>
+            </p>
+            <p class='bilanguage'
+            data-en='This is an editor that uses the descriptive language Markdown.'
+            data-ro="Acesta este un editor care folosește limbajul descriptiv Markdown.">
+            </p>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Markdown-mark.svg/1200px-Markdown-mark.svg.png" alt="Markdown Logo" width="200">
+            <p class='bilanguage'
+            data-en='How does it work?'
+            data-ro='Cum funcționează?'>
+            </p>
+            <p class='bilanguage'
+            data-en='In the editor you can write text using the Markdown format, and in the preview you will see how the exported text will look. You can export the edited text in PDF format.'
+            data-ro='În editor poți scrie text folosind formatul Markdown, iar în previzualizare vei vedea cum va arăta textul ropă ce va fi exportat. Poți să exporți textul editat în format PDF.'>
+            </p>
+            <br>
+            <div id="toolbar-m">
+                <button onclick="selectFileDialogHome()" class='bilanguage generic-button' data-en='Open File' data-ro='Deschide Fișier'></button>
+                <button onclick="newFileDialogHome()" class='bilanguage generic-button' data-en='New File' data-ro='Fișier Nou'></button>
+            </div>
         </div>
     </div>
 </body>

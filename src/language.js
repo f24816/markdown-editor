@@ -1,7 +1,17 @@
-var currentlanguage = 'en';
+// The default language is 'en' English
+var currentlanguage = 'ro';
+
+// BUG: This function needs to be called once to work
+changelang();
+
+// Get the value of selected language from <select> element
+document.getElementById('language-select-option').addEventListener('change', function() {
+    console.log(this.value);
+    currentlanguage = this.value;
+    changelang();
+});
 
 function changelang() {
-    console.log(currentlanguage);
     var styleTag = document.getElementById('language-style');
         if (styleTag) {
             styleTag.textContent = '.bilanguage::after {content: ' + getContent() + '!important;}';

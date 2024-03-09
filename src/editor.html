@@ -1,67 +1,120 @@
 <!DOCTYPE html>
-<html>
-  <head>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/2.0.3/marked.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.58.3/mode/markdown/markdown.min.js"></script>
     <link rel="stylesheet" href="styles.css">
     <meta charset="utf-8">
-  </head>
-  </head>
-  <body>
-    <div id="tooltips">
-      <button type="button" class='button-min bilanguage' onclick='changelang()' data-en='🌏 Română' data-ro='🌏 English'></button>
-      <button class='button-min bilanguage'
-      data-en='Format'
-      data-ro='Formatează'>
-      </button>
-      <button class='button-min bilanguage'
-      data-en='About'
-      data-ro='Despre'>
-      </button>
-    </div>
-    <div id="info">
-      <!-- <p>Cuvinte: <span id="word-count">0</span></p> -->
-      <p class='bilanguage'
-      data-en=' Words'
-      data-ro=' Cuvinte'><span id="word-count">0</span>
-      </p>
-    </div>
-    <div id="popup">
-      <p class='bilanguage'
-      data-en='📝 The PDF document has been saved!'
-      data-ro='📝 Documentul PDF a fost salvat!'>
-      </p>
-    </div>
-    <div class="centered" style="padding-top: 10px;">
-      <div id="toolbar">
-        <button onclick="selectFileDialog()" class='bilanguage'
-        data-en='Open File'
-        data-ro='Deschide Fișier'>
-        </button>
-        <button onclick="saveFileDialog()" class='bilanguage'
-        data-en='Save File'
-        data-ro='Salvează'
-        >
-        </button>
-        <button id="btn-export">Export PDF</button>
-        <button id="btn-bold"><b>B</b></button>
-        <button id="btn-italic"><b>I</b></button>
-        <button id="btn-code"><b><></b></button>
-        <button id="btn-strike"><s>A</s></button>
-        <button id="btn-link">Link</button>
-        <button id="btn-image" class='bilanguage'
-        data-en='Image'
-        data-ro='Poză'
-        >
-        </button>
-        <button id="btn-preview">Previzualizare</button>
-      </div>
-      <div id="preview"></div>
-      <textarea id="editor"></textarea>
-    </div>
-  </body>
-  <script src="main.js"></script>
-  <script src="language.js"></script>
+</head>
+    <body>
+        <!-- Editor Screen -->
+        <div id="header">
+            <div class="menubar">
+                <a class="dma" href="/">
+                    <img class="home-icon" src="icons/256.png">
+                </a>
+                <div id="home">
+                    <h5 id="title">New Document</h5>
+                    <div id="home-actions">
+                        <!-- <p id="interact-file">File</p> -->
+                        <button id="interact-file">File</button>
+                        <div id="file-dropdown">
+                            <!-- <p>New</p>
+                            <p>Open</p>
+                            <p>Save</p>
+                            <p>Save As</p> -->
+                            <!-- Dummy -->
+                            <button onclick="selectFileDialog()" class='bilanguage'
+                            data-en='Open'
+                            data-ro='Deschide'>
+                            </button><br>
+                            <button onclick="saveFileDialog()" class='bilanguage'
+                            data-en='Save'
+                            data-ro='Salvează'>
+                            </button><br>
+                        </div>
+                        <!-- <p>Language</p> -->
+                        <p>Format</p>
+                        <button id="btn-export">Export</button>
+                        <p>Theme</p>
+                        <p>About</p>
+                    </div>
+                </div>
+                <div id="main-actions">
+                    <img class="language-select" src="icons/translate.svg">
+                    <select id="language-select-option">
+                        <option value="ro">English</option>
+                        <option value="en">Romanian</option>
+                    </select>
+                    <img class="theme-select" src="icons/light_mode.svg">
+                    <div id="btn-preview">
+                        <img class="preview-icon" style="margin-top: 1px;" src="icons/preview.svg">
+                        <p>Preview</p>
+                    </div>
+                </div>
+            </div>
+            <div class="menubar bootom-bar">
+                <div id="buttons">
+                    <button class="btn-icon" id="btn-bold"><img src="icons/format_bold.svg"></button>
+                    <button class="btn-icon" id="btn-italic"><img src="icons/format_italic.svg"></button>
+                    <button class="abl btn-icon" id="btn-strike"><img src="icons/strikethrough.svg"></button>
+                    <p class="delimitator">|</p>
+                    <button class="btn-icon" id="btn-image"><img src="icons/insert_image.svg"></button>
+                    <button class="btn-icon" id="btn-code-block"><img src="icons/code_blocks.svg"></button>
+                    <button class="btn-icon" id="btn-code"><img src="icons/code_black.svg"></button>
+                    <button class="btn-icon" id="btn-quote"><img src="icons/format_quote.svg"></button>
+                    <button class="btn-icon" id="btn-link"><img src="icons/insert_link.svg"></button>
+                    <p class="delimitator">|</p>
+                    <button class="btn-icon" id="btn-list-bullet"><img src="icons/format_list_bulleted.svg"></button>
+                    <button class="btn-icon" id="btn-list-numbered"><img src="icons/format_list_numbered.svg"></button>
+                    <button class="btn-icon" id="btn-align-left"><img src="icons/format_align_left.svg"></button>
+                    <button class="btn-icon" id="btn-align-center"><img src="icons/format_align_center.svg"></button>
+                    <button class="btn-icon" id="btn-align-right"><img src="icons/format_align_right.svg"></button>
+                    <button class="btn-icon" id="btn-checklist"><img src="icons/checklist.svg"></button>
+                </div>
+            </div>
+            <div id="info">
+                <!-- <p>Cuvinte: <span id="word-count">0</span></p> -->
+                <p class='bilanguage'
+                data-en=' Words'
+                data-ro=' Cuvinte'><span id="word-count">0</span>
+                </p>
+              </div>
+              <div id="popup">
+                <p class='bilanguage'
+                data-en='📝 The PDF document has been saved!'
+                data-ro='📝 Documentul PDF a fost salvat!'>
+                </p>
+            </div>
+        </div>
+        <!-- <div id="slider">
+            <img src="icons/arrow_right.svg">
+        </div> -->
+        <div id="centered">
+            <div id="preview"></div>
+            <textarea id="editor"></textarea>
+        </div>
+    </body>
+    <script type="text/javascript" src="export.js"></script>
+    <script type="text/javascript" src="main.js"></script>
+    <script type="text/javascript" src="language.js"></script>
+    <script>
+        // Open file dialog
+        document.getElementById('interact-file').addEventListener('click', function() {
+            console.log('interact-file clicked');
+            document.getElementById('file-dropdown').style.display = 'block';
+        });
+
+        document.addEventListener('click', function(event) {
+            var fileDropdown = document.getElementById('file-dropdown');
+            var target = event.target;
+            if (!fileDropdown.contains(target) && target !== document.getElementById('interact-file')) {
+                fileDropdown.style.display = 'none';
+            }
+        });
+    </script>
 </html>

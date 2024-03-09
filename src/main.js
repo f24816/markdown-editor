@@ -1,45 +1,60 @@
-// Import lib from tauri api
-const { open } = window.__TAURI__.dialog
-const { save } = window.__TAURI__.dialog
-const { readTextFile } = window.__TAURI__.fs
-const { writeFile, writeTextFile, BaseDirectory } = window.__TAURI__.fs
-const { resolveResource } = window.__TAURI__.path
-const { invoke } = window.__TAURI__.tauri
-
-const { tempdir } = window.__TAURI__.os
+// Import necessary modules from tauri
+const { open } = window.__TAURI__.dialog;
+const { save } = window.__TAURI__.dialog;
+const { readTextFile } = window.__TAURI__.fs;
+const { writeFile, writeTextFile, BaseDirectory } = window.__TAURI__.fs;
+const { resolveResource } = window.__TAURI__.path;
+const { invoke } = window.__TAURI__.tauri;
+const { tempdir } = window.__TAURI__.os;
 
 // Establsih global variables
-var preview_mode = false;
+var PREVIEW_MODE = false;
 
 // Enable hard breaks for the markdown renderer
 marked.setOptions({
-  breaks: true,
+    breaks: true,
 });
 
 // Toggle preview mode
-document.getElementById('btn-preview').addEventListener('click', function() {
-  if (preview_mode) {
-    preview_mode = false;
-    document.getElementById('btn-preview').innerHTML = 'Previzualizează';
-    document.getElementById('preview').style.display = 'none';
-    editor.getWrapperElement().style.display = 'block';
-  } else {
-    preview_mode = true;
-    document.getElementById('btn-preview').innerHTML = 'Editează';
-    document.getElementById('preview').innerHTML = marked(editor.getValue());
-    document.getElementById('preview').style.display = 'block';
-    editor.getWrapperElement().style.display = 'none';
-  }
+document.getElementById("btn-preview").addEventListener("click", function () {
+    if (PREVIEW_MODE) {
+        PREVIEW_MODE = false;
+
+        // get all elemetns with class "btn-edit" and remove the class inverted
+        const btnIconElements = document.querySelectorAll(".btn-icon");
+        for (const element of btnIconElements) {
+            element.classList.remove("inverted");
+        }
+
+        document.getElementById("btn-preview").classList.remove("btn-edit");
+        document.getElementById("preview").style.display = "none";
+        editor.getWrapperElement().style.display = "block";
+    } else {
+        PREVIEW_MODE = true;
+
+        // get all elemetns with class "btn-edit" and add the class inverted
+        const btnIconElements = document.querySelectorAll(".btn-icon");
+        for (const element of btnIconElements) {
+            element.classList.add("inverted");
+        }
+
+        document.getElementById("btn-preview").classList.add("btn-edit");
+        document.getElementById("preview").innerHTML = marked(
+            editor.getValue()
+        );
+        document.getElementById("preview").style.display = "block";
+        editor.getWrapperElement().style.display = "none";
+    }
 });
 
-// BUG Sometimes it doesn't export the file
+// Generate HTML to send to the PDF renderer.
+document.getElementById("btn-export").addEventListener("click", function () {
+    // BUG: Sometimes it doesn't export the file.
+    // This workaround doesen't seem to work.
+    document.getElementById("preview").innerHTML = marked(editor.getValue());
 
-// Get HTML from preview to send to the PDF renderer.
-document.getElementById('btn-export').addEventListener('click', function() {
-  document.getElementById('preview').innerHTML = marked(editor.getValue());
-  var element = document.getElementById('preview');
-
-  begining = `
+    // Define HTML boilerplate
+    begining = `
 <!DOCTYPE html>
 <html>
 <head>
@@ -51,417 +66,422 @@ document.getElementById('btn-export').addEventListener('click', function() {
   </style>
 </head>
 <body>
-  `
-
-  end = `
+  `;
+    end = `
 </body>
 </html>
-  `
+  `;
 
-  var html = begining + element.outerHTML + end;
-  console.log(html);
-
-  async function getTempDir() {
-    try {
-      const tempDirPath = await tempdir();
-      let tempFilePath = `${tempDirPath}file.html`;
-      console.log(tempFilePath);
-
-      // Open file save dialog
-      const selection = save({
-        filters: [{
-          extensions: ['pdf'], name: "*"
-        }]
-      })
-      console.log(await selection); // Comes as a promise
-
-      // Save .html file
-      const createDataFile = async () => {
-        try {
-          await writeFile(
-            {
-              contents: html,
-              path: tempFilePath
-            },
-            {
-              dir: BaseDirectory.Temp
-            }
-          );
-        } catch (e) { console.log(e); }}; // Some boring error handling.
-      createDataFile();
-
-      // Invoke the command
-      invoke('generate_pdf', { input: tempFilePath, output: await selection })
-        .then((res) => {
-          console.log(res);
-          document.getElementById('popup').style.display = 'block';
-          document.getElementById('popup').style.opacity = '1';
-          document.getElementById('popup').style.transition = 'none';
-
-          // Wait 1 second
-          setTimeout(function()
-          {
-            document.getElementById('popup').style.transition = 'opacity 1s ease-out';
-            document.getElementById('popup').style.opacity = '0';
-          }, 2000);
-          setTimeout(function()
-          {
-            document.getElementById('popup').style.display = 'none';
-          }, 3000);
-        })
-        .catch((err) => {
-          console.error(err);
-        });
-
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  }
-
-  getTempDir();
+    // Get the preview element
+    var element = document.getElementById("preview");
+    // Combine to form a valid HTML file
+    var html = begining + element.outerHTML + end;
+    // Store the HTML file in the temp directory
+    // call the function from export.js
+    getTempDir(html);
 
 });
 
 // Create codemirror editor
-var editor = CodeMirror.fromTextArea(document.getElementById('editor'), {
-  lineNumbers: false,
-  lineWrapping: true,
-  mode: 'markdown'
-
+var editor = CodeMirror.fromTextArea(document.getElementById("editor"), {
+    lineNumbers: false,
+    lineWrapping: true,
+    mode: "markdown",
 });
 
-editor.setSize("800", "100%")
+editor.setSize("800", "100%");
 
 // ###### Here is where the magic happens ######
 
-var data = localStorage.getItem('open');
-
-console.log(data); // Output: value
+var data = localStorage.getItem("open");
 
 // check if data is true and select file
-if (data == 'true') {
-  selectFileDialog();
+if (data == "true") {
+    selectFileDialog();
 }
 
 // Select file
 function selectFileDialog() {
-  const selection = open({
-    multiple: false,
-    filters: [{
-      extensions: ['md', 'mdx'], name: "*"
-    }]
-  })
+    const selection = open({
+        multiple: false,
+        filters: [
+            {
+                extensions: ["md"],
+                name: "*",
+            },
+        ],
+    });
 
-  // Read selected file
-  selection.then(result => {
-      const promise = readTextFile(result);
-      promise.then((response) => {
-        preview_mode = false;
-        document.getElementById('btn-preview').innerHTML = 'Preview';
-        document.getElementById('preview').style.display = 'none';
-        editor.getWrapperElement().style.display = 'block';
-        editor.setValue(response);
-      }).catch((error) => {
-        console.error(error);
-      });
-      console.log(result)
-  }).catch(err => {
-      console.error(err)
-  })
+    // Read selected file
+    selection
+        .then((result) => {
+            const promise = readTextFile(result);
+            promise
+                .then((response) => {
+                    PREVIEW_MODE = false;
+
+                    // File name to title
+                    var filename = result.split("\\").pop().split("/").pop();
+                    document.getElementById("title").innerHTML = filename;
+
+                    document
+                        .getElementById("btn-preview")
+                        .classList.remove("btn-edit");
+                    document.getElementById("preview").style.display = "none";
+                    editor.getWrapperElement().style.display = "block";
+                    editor.setValue(response);
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+            console.log(result);
+        })
+        .catch((err) => {
+            console.error(err);
+        });
 }
 
 // Save file
 function saveFileDialog() {
+    const selection = save({
+        filters: [
+            {
+                extensions: ["md"],
+                name: "*",
+            },
+        ],
+    });
 
-const selection = save({
-  filters: [{
-  extensions: ['md', 'mdx'], name: "*"
-  }]
-})
+    // Read selected file
+    selection
+        .then((result) => {
+            // result is the path chosen by the user
+            // Write file to location selected
+            const promise = writeTextFile({
+                path: result,
+                contents: editor.getValue(),
+                directory: BaseDirectory.Current,
+            });
+            promise
+                .then((response) => {
+                    console.log(response);
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+            console.log(result);
+        })
+        .catch((err) => {
+            console.error(err);
+        });
+}
 
-// Read selected file
-selection.then(result => { // result is the path chosen by the user
-  // Write file to location selected
-  const promise = writeTextFile({
-  path: result,
-  contents: editor.getValue(),
-  directory: BaseDirectory.Current
-  });
-  promise.then((response) => {
-  console.log(response);
-  }).catch((error) => {
-  console.error(error);
-  });
-  console.log(result)
-}).catch(err => {
-  console.error(err)
-})
+// -------------------------------------------
+// --------- Keybindings for editor ----------
+// -------------------------------------------
+
+// Generic formating algorithm for bold, italic, etc.
+function genericFormat(editor, string, length) {
+
+    // Initialize variables
+    var cursor = editor.getCursor();
+    var word = editor.findWordAt(cursor);
+    var word_content = editor.getRange(word.anchor, word.head);
+    var extendedWord = {
+        anchor: { line: word.anchor.line, ch: Math.max(0, word.anchor.ch - length) },
+        head: { line: word.head.line, ch: word.head.ch + length },
+    };
+    var extendedWordText = editor.getRange(
+        extendedWord.anchor,
+        extendedWord.head
+    );
+
+    // Handle on selected
+    var selection = editor.getSelection();
+    if (selection.length > 1) {
+        if (selection.startsWith(string) && selection.endsWith(string)) {
+            // Remove bold
+            editor.replaceSelection(selection.slice(length, (length - (length*2))));
+            return;
+        } else {
+            // Add bold
+            editor.replaceSelection(string + selection + string);
+            return;
+        }
+    }
+
+    // Check if the selection has some formating already applied to avoid adding it twice,
+    // esspecially when the cursor is at the end of the word
+    if (
+        extendedWordText.startsWith(string) == false &&
+        extendedWordText.endsWith(string) == true
+    ) {
+
+        return;
+    }
+    if (
+        extendedWordText.endsWith(string) == false &&
+        extendedWordText.startsWith(string) == true
+    ) {
+        return;
+    }
+
+    // Handle on cursor
+    // Add or remove characters
+    if (extendedWordText.startsWith(string) && extendedWordText.endsWith(string)) {
+        // Remove
+        rmv = extendedWordText.slice(length, (length - (length*2)));
+        editor.replaceRange(rmv, extendedWord.anchor, extendedWord.head);
+        editor.setCursor(cursor.line, cursor.ch - length);
+    } else {
+        // Add
+        editor.replaceRange(string + word_content + string, word.anchor, word.head);
+        editor.setCursor(cursor.line, cursor.ch + length);
+    }
 }
 
 // Bold
-document.getElementById('btn-bold').addEventListener('click', function() {
-  boldText(editor )
+document.getElementById("btn-bold").addEventListener("click", function () {
+    // Call generic formating algorithm for italic
+    genericFormat(editor, "**", 2);
 });
 
-function boldText(editor) {
-  var cursor = editor.getCursor();
-  var word = editor.findWordAt(cursor);
-  var word_content = editor.getRange(word.anchor, word.head);
-
-  var extendedWord = {
-    anchor: { line: word.anchor.line, ch: Math.max(0, word.anchor.ch - 2) },
-    head: { line: word.head.line, ch: word.head.ch + 2 }
-  };
-
-  var extendedWordText = editor.getRange(extendedWord.anchor, extendedWord.head);
-
-  console.log(extendedWordText);
-
-  if (extendedWordText.startsWith('**') && extendedWordText.endsWith('**')) {
-    console.log('remove bold');
-    // Remove bold
-    rmv = extendedWordText.slice(2, -2);
-    console.log(rmv);
-    editor.replaceRange(rmv, extendedWord.anchor, extendedWord.head);
-    editor.setCursor(cursor.line, cursor.ch - 2);
-  } else {
-    // Add bold
-    editor.replaceRange('**' + word_content + '**', word.anchor, word.head);
-    editor.setCursor(cursor.line, cursor.ch + 2);
-  }
-
-  // BUG: Add exception for when the cursor is at the end of the word
-  // Add exception for selections and handle them diferently
-}
-
 editor.addKeyMap({
-  'Ctrl-B': function(cm) {
-    boldText(cm)
-  }
+    "Ctrl-B": function (cm) {
+        // Call generic formating algorithm for italic
+        genericFormat(editor, "**", 2);
+    },
 });
 
 // Italic
-document.getElementById('btn-italic').addEventListener('click', function() {
-  italicText(editor)
+document.getElementById("btn-italic").addEventListener("click", function () {
+    // Call generic formating algorithm for italic
+    genericFormat(editor, "*", 1);
 });
 
-function italicText(editor) {
-  var selection = editor.getSelection();
-  if (selection.length < 1) {
-    return;
-  }
-  var cursor = editor.getCursor();
-  if (selection.startsWith('*') && selection.endsWith('*')) {
-      // Remove bold
-      editor.replaceSelection(selection.slice(1, -1));
-      // Adjust cursor position
-      editor.setCursor({line: cursor.line, ch: cursor.ch - 1});
-  } else {
-      // Add bold
-      editor.replaceSelection('*' + selection + '*');
-      // Adjust cursor position
-      editor.setCursor({line: cursor.line, ch: cursor.ch + 1});
-  }
-}
-
 editor.addKeyMap({
-  'Ctrl-I': function(cm) {
-    italicText(cm)
-  }
+    "Ctrl-I": function (editor) {
+        // Call generic formating algorithm for italic
+        genericFormat(editor, "*", 1);
+    },
 });
 
 // Code
-document.getElementById('btn-code').addEventListener('click', function() {
-  codeText(editor)
+document.getElementById("btn-code").addEventListener("click", function () {
+    // Call generic formating algorithm for italic
+    genericFormat(editor, "`", 1);
 });
 
-function codeText(editor) {
-  var selection = editor.getSelection();
-  if (selection.length < 1) {
-    return;
-  }
-  var cursor = editor.getCursor();
-  if (selection.startsWith('`') && selection.endsWith('`')) {
-      // Remove bold
-      editor.replaceSelection(selection.slice(1, -1));
-      // Adjust cursor position
-      editor.setCursor({line: cursor.line, ch: cursor.ch - 1});
-  } else {
-      // Add bold
-      editor.replaceSelection('`' + selection + '`');
-      // Adjust cursor position
-      editor.setCursor({line: cursor.line, ch: cursor.ch + 1});
-  }
-}
-
 editor.addKeyMap({
-  'Ctrl-`': function(cm) {
-    codeText(cm)
-  }
+    "Ctrl-`": function (editor) {
+        // Call generic formating algorithm for italic
+        genericFormat(editor, "`", 1);
+    },
 });
 
 // Strikethrough
-document.getElementById('btn-strike').addEventListener('click', function() {
-  strikethroughText(editor)
+document.getElementById("btn-strike").addEventListener("click", function () {
+    // Call generic formating algorithm for italic
+    genericFormat(editor, "~~", 2);
 });
 
-function strikethroughText(editor) {
-  var selection = editor.getSelection();
-  if (selection.length < 1) {
-    return;
-  }
-  var cursor = editor.getCursor();
-  if (selection.startsWith('~~') && selection.endsWith('~~')) {
-      // Remove bold
-      editor.replaceSelection(selection.slice(2, -2));
-      // Adjust cursor position
-      editor.setCursor({line: cursor.line, ch: cursor.ch - 2});
-  } else {
-      // Add bold
-      editor.replaceSelection('~~' + selection + '~~');
-      // Adjust cursor position
-      editor.setCursor({line: cursor.line, ch: cursor.ch + 2});
-  }
-}
-
 editor.addKeyMap({
-  'Ctrl-Alt-S': function(cm) {
-    strikethroughText(cm)
-  }
+    "Ctrl-Alt-S": function (editor) {
+        // Call generic formating algorithm for italic
+        genericFormat(editor, "~~", 2);
+    },
 });
 
 // Link
-document.getElementById('btn-link').addEventListener('click', function() {
-  linkText(editor)
+document.getElementById("btn-link").addEventListener("click", function () {
+    linkText(editor);
 });
 
 function linkText(editor) {
-  // Insert link text
-  var selection = editor.getSelection();
-  if (selection.length < 1) {
-    return;
-  }
-  var cursor = editor.getCursor();
+    // Insert link text
+    var selection = editor.getSelection();
+    if (selection.length < 1) {
+        return;
+    }
 
-  // Insert link URL
-  var link = prompt('Enter link URL', 'https://');
-  if (link == null) {
-    return;
-  }
+    // Insert link URL
+    var link = prompt("Enter link URL", "https://");
+    if (link == null) {
+        return;
+    }
 
-  // Insert link
-  editor.replaceSelection('[' + selection + '](' + link + ')');
-  // Adjust cursor position
-  editor.setCursor({line: cursor.line, ch: cursor.ch + 1});
+    // Insert link
+    editor.replaceSelection("[" + selection + "](" + link + ")");
 }
 
 // Image
-document.getElementById('btn-image').addEventListener('click', function() {
-  imageText(editor)
+document.getElementById("btn-image").addEventListener("click", function () {
+    insertImage(editor);
 });
 
-function imageText(editor) {
-  // Insert link text
-  var selection = editor.getSelection();
-  var cursor = editor.getCursor();
+function insertImage(editor) {
+    // Insert link text
+    var cursor = editor.getCursor();
 
-  // Insert link URL
-  var link = prompt('Enter image URL', 'https://');
-  if (link == null) {
-    return;
-  }
+    // Insert link URL
+    var link = prompt("Enter image URL", "https://");
+    if (link == null) {
+        return;
+    }
 
-  // Insert link
-  editor.replaceSelection('![' + selection + '](' + link + ')');
-  // Adjust cursor position
-  editor.setCursor({line: cursor.line, ch: cursor.ch + 1});
+    // Insert image
+    editor.replaceSelection('<img src="' + link + '" width="400">');
+}
+
+// Code block
+document.getElementById("btn-code-block").addEventListener("click", function () {
+    codeBlock(editor);
+});
+
+function codeBlock(editor) {
+    // Insert link text
+    var selection = editor.getSelection();
+    if (selection.length < 1) {
+        return;
+    }
+
+    // Insert link
+    editor.replaceSelection("```\n" + selection + "\n```");
+}
+
+// Blockquote
+document.getElementById("btn-quote").addEventListener("click", function () {
+    blockquote(editor);
+});
+
+function blockquote(editor) {
+    // Get current line
+    var cursor = editor.getCursor();
+    var line = editor.getLine(cursor.line);
+
+    // Remove blockquote if it already exists
+    if (line.startsWith("> ")) {
+        console.log("Remove blockquote");
+        // Remove the first two characters of the line
+        editor.replaceRange("", { line: cursor.line, ch: 0 }, { line: cursor.line, ch: 2 });
+        return;
+    } else {
+        console.log("Add blockquote");
+        // Insert blockquote
+        editor.replaceRange("> " + line, { line: cursor.line, ch: 0 }, { line: cursor.line, ch: line.length });
+    }
+}
+
+editor.addKeyMap({
+    "Ctrl-Q": function (editor) {
+        blockquote(editor);
+    },
+});
+
+
+// Align center
+document.getElementById("btn-align-center").addEventListener("click", function () {
+    centerText(editor);
+});
+
+function centerText(editor) {
+    var selection = editor.getSelection();
+    editor.replaceSelection("<center>" + selection + "</center>");
+}
+
+// Align right
+document.getElementById("btn-align-right").addEventListener("click", function () {
+    rightText(editor);
+});
+
+function rightText(editor) {
+    var selection = editor.getSelection();
+    editor.replaceSelection("<right>" + selection + "</right>");
+}
+
+// Align left
+document.getElementById("btn-align-left").addEventListener("click", function () {
+    leftText(editor);
+});
+
+function leftText(editor) {
+    var selection = editor.getSelection();
+    // Check if the selection has <right> at the beginning and </right> at the end
+    if (selection.startsWith("<right>") && selection.endsWith("</right>")) {
+        // Remove <right> and </right>
+        editor.replaceSelection(selection.slice(7, -8));
+        return;
+    } if (selection.startsWith("<center>") && selection.endsWith("</center>")) {
+        // Remove <center> and </center>
+        editor.replaceSelection(selection.slice(8, -9));
+        return;
+    }
 }
 
 // Heading 1
-function h1Text(editor) {
-  var cursor = editor.getCursor();
-  var line = editor.getLine(cursor.line);
-  var output = '# ' + line;
-  editor.replaceRange(output, {line: cursor.line, ch: 0}, {line: cursor.line, ch: line.length});
+function genericHeading(editor, string) {
+    var cursor = editor.getCursor();
+    var line = editor.getLine(cursor.line);
+    // Check if the line already starts with a heading
+    if (line.startsWith(string)) {
+        console.log("Remove heading");
+        // Remove the first characters of the line up to the first space
+        editor.replaceRange("", { line: cursor.line, ch: 0 }, { line: cursor.line, ch: line.indexOf(" ") + 1 });
+        return;
+    } if (line.startsWith("#")) {
+        console.log("Remove heading");
+        // Remove the first characters of the line up to the first space
+        editor.replaceRange("", { line: cursor.line, ch: 0 }, { line: cursor.line, ch: line.indexOf(" ") + 1 });
+        // Add level 1 heading to the line
+        // Get the line again
+        line = editor.getLine(cursor.line);
+        editor.replaceRange(string + line, { line: cursor.line, ch: 0 }, { line: cursor.line, ch: line.length });
+        return;
+    } else {
+        var output = string + line;
+        editor.replaceRange(output, { line: cursor.line, ch: 0 }, { line: cursor.line, ch: line.length });
+    }
 }
 
 editor.addKeyMap({
-  'Ctrl-1': function(cm) {
-    h1Text(cm)
-  }
+    "Ctrl-1": function (editor) {
+        genericHeading(editor, "# ");
+    },
 });
 
-// Heading 2
-function h2Text(editor) {
-  var cursor = editor.getCursor();
-  var line = editor.getLine(cursor.line);
-  var output = '## ' + line;
-  editor.replaceRange(output, {line: cursor.line, ch: 0}, {line: cursor.line, ch: line.length});
-}
-
 editor.addKeyMap({
-  'Ctrl-2': function(cm) {
-    h2Text(cm)
-  }
+    "Ctrl-2": function (cm) {
+        genericHeading(editor, "## ");
+    },
 });
 
-// Heading 3
-function h3Text(editor) {
-  var cursor = editor.getCursor();
-  var line = editor.getLine(cursor.line);
-  var output = '### ' + line;
-  editor.replaceRange(output, {line: cursor.line, ch: 0}, {line: cursor.line, ch: line.length});
-}
-
 editor.addKeyMap({
-  'Ctrl-3': function(cm) {
-    h3Text(cm)
-  }
+    "Ctrl-3": function (cm) {
+        genericHeading(editor, "### ");
+    },
 });
 
-// Heading 4
-function h4Text(editor) {
-  var cursor = editor.getCursor();
-  var line = editor.getLine(cursor.line);
-  var output = '#### ' + line;
-  editor.replaceRange(output, {line: cursor.line, ch: 0}, {line: cursor.line, ch: line.length});
-}
-
 editor.addKeyMap({
-  'Ctrl-4': function(cm) {
-    h4Text(cm)
-  }
+    "Ctrl-4": function (cm) {
+        genericHeading(editor, "#### ");
+    },
 });
 
-// Heading 5
-function h5Text(editor) {
-  var cursor = editor.getCursor();
-  var line = editor.getLine(cursor.line);
-  var output = '##### ' + line;
-  editor.replaceRange(output, {line: cursor.line, ch: 0}, {line: cursor.line, ch: line.length});
-}
-
 editor.addKeyMap({
-  'Ctrl-5': function(cm) {
-    h5Text(cm)
-  }
+    "Ctrl-5": function (cm) {
+        genericHeading(editor, "##### ");
+    },
 });
 
-// Heading 6
-function h6Text(editor) {
-  var cursor = editor.getCursor();
-  var line = editor.getLine(cursor.line);
-  var output = '###### ' + line;
-  editor.replaceRange(output, {line: cursor.line, ch: 0}, {line: cursor.line, ch: line.length});
-}
-
 editor.addKeyMap({
-  'Ctrl-6': function(cm) {
-    h6Text(cm)
-  }
+    "Ctrl-6": function (cm) {
+        genericHeading(editor, "###### ");
+    },
 });
 
 // Word counter update
-editor.on('change', function(instance) {
-  document.getElementById('word-count').innerHTML = instance.getValue().split(/\s+/).length;
+editor.on("change", function (instance) {
+    document.getElementById("word-count").innerHTML = instance
+        .getValue()
+        .split(/\s+/).length;
 });

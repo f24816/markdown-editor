@@ -26,7 +26,7 @@
         "open": true
       },
       "fs": {
-        "all": false,
+        "all": true,
         "copyFile": false,
         "createDir": false,
         "exists": false,
@@ -35,7 +35,7 @@
         "removeDir": false,
         "removeFile": false,
         "renameFile": false,
-        "scope": ["$TEMP/*", "$APP/*"],
+        "scope": ["$TEMP/*", "$APP/*", "$RESOURCE/*"],
         "writeFile": true
       },
       "path": {
@@ -68,9 +68,9 @@
         "fullscreen": false,
         "resizable": true,
         "title": "Editor Documente",
-        "width": 860,
-        "height": 800,
-        "maximized": true
+        "width": 900,
+        "height": 1600,
+        "maximized": false
       }
     ]
   }
