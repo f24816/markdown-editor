@@ -7,7 +7,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/2.0.3/marked.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.58.3/mode/markdown/markdown.min.js"></script>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="./styles/main.css">
     <meta charset="utf-8">
 </head>
     <body>
@@ -18,39 +18,42 @@
                     <img class="home-icon" src="icons/256.png">
                 </a>
                 <div id="home">
-                    <h5 id="title">New Document</h5>
+                    <h5 id="title" class="button">New Document</h5>
                     <div id="home-actions">
                         <!-- <p id="interact-file">File</p> -->
-                        <button id="interact-file">File</button>
+                        <button id="interact-file" class="button">File</button>
                         <div id="file-dropdown">
-                            <!-- <p>New</p>
-                            <p>Open</p>
-                            <p>Save</p>
-                            <p>Save As</p> -->
-                            <!-- Dummy -->
-                            <button onclick="selectFileDialog()" class='bilanguage'
+                            <button onclick="newFile()" class='bilanguage button'
+                            data-en='New'
+                            data-ro='Nou'>
+                            </button><br>
+                            <button onclick="selectFileDialog()" class='bilanguage button'
                             data-en='Open'
                             data-ro='Deschide'>
                             </button><br>
-                            <button onclick="saveFileDialog()" class='bilanguage'
+                            <button onclick="saveFileDialog()" class='bilanguage button'
                             data-en='Save'
                             data-ro='Salvează'>
                             </button><br>
                         </div>
+                        <div id="format-dropdown">
+                            <button onclick="sizePortrait()">Portrait</button><br>
+                            <button onclick="sizeLandscape()">Landscape</button><br>
+                        </div>
                         <!-- <p>Language</p> -->
-                        <p>Format</p>
-                        <button id="btn-export">Export</button>
-                        <p>Theme</p>
-                        <p>About</p>
+                        <p id="interact-format" class="button">Format</p>
+                        <button id="btn-export" class="button">Export</button>
+                        <p class="button">Theme</p>
+                        <p id="interact-about" class="button">About</p>
                     </div>
                 </div>
                 <div id="main-actions">
-                    <img class="language-select" src="icons/translate.svg">
+                    <img class="language-select themed-icon" src="icons/translate.svg">
                     <select id="language-select-option">
-                        <option value="ro">English</option>
-                        <option value="en">Romanian</option>
+                        <option value="ro"><p>English</p></option>
+                        <option value="en"><p>Română</p></option>
                     </select>
-                    <img class="theme-select" src="icons/light_mode.svg">
+                    <img class="theme-select themed-icon" id="change-theme" src="icons/light_mode.svg">
                     <div id="btn-preview">
                         <img class="preview-icon" style="margin-top: 1px;" src="icons/preview.svg">
                         <p>Preview</p>
@@ -91,30 +94,21 @@
                 </p>
             </div>
         </div>
-        <!-- <div id="slider">
-            <img src="icons/arrow_right.svg">
-        </div> -->
+        <div id="about">
+            <img class="main-pic" src="icons/256.png">
+            <button id="close-button"><img class="close-icon" src="icons/close.svg"></button>
+            <h2>About</h2>
+            <p>Markdown Editor is a simple editor that uses the descriptive language Markdown. It is a simple and easy to use editor that allows you to write text using the Markdown format and export it in PDF format.</p>
+            <br>
+            <p>Version: 1.0.0</p>
+        </div>
         <div id="centered">
             <div id="preview"></div>
             <textarea id="editor"></textarea>
         </div>
     </body>
-    <script type="text/javascript" src="export.js"></script>
-    <script type="text/javascript" src="main.js"></script>
-    <script type="text/javascript" src="language.js"></script>
-    <script>
-        // Open file dialog
-        document.getElementById('interact-file').addEventListener('click', function() {
-            console.log('interact-file clicked');
-            document.getElementById('file-dropdown').style.display = 'block';
-        });
-
-        document.addEventListener('click', function(event) {
-            var fileDropdown = document.getElementById('file-dropdown');
-            var target = event.target;
-            if (!fileDropdown.contains(target) && target !== document.getElementById('interact-file')) {
-                fileDropdown.style.display = 'none';
-            }
-        });
-    </script>
+    <script type="text/javascript" src="./js/export.js"></script>
+    <script type="text/javascript" src="./js/main.js"></script>
+    <script type="text/javascript" src="./js/language.js"></script>
+    <script type="text/javascript" src="./js/utils.js"></script>
 </html>

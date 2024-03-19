@@ -1,4 +1,40 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap'); */
+@font-face {
+    font-family: 'Inter'; /* Specify the font family name */
+    src: url('./fonts/Inter-Regular.ttf') format('truetype'); /* Regular weight */
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: 'Inter'; /* Specify the font family name */
+    src: url('./fonts/Inter-Bold.ttf') format('truetype'); /* Bold weight */
+    font-weight: 700;
+}
+
+@font-face {
+    font-family: 'Inter'; /* Specify the font family name */
+    src: url('./fonts/Inter-Italic.ttf') format('truetype'); /* Italic weight */
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Inter'; /* Specify the font family name */
+    src: url('./fonts/Inter-Medium.ttf') format('truetype'); /* Medium weight */
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: 'Inter'; /* Specify the font family name */
+    src: url('./fonts/Inter-Light.ttf') format('truetype'); /* Light weight */
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: 'Inter'; /* Specify the font family name */
+    src: url('./fonts/Inter-Black.ttf') format('truetype'); /* Black weight */
+    font-weight: 900;
+}
+
 :root {
     --background-color: #ffffff;
     --bottom-bar-color: #edf3f5;
@@ -9,7 +45,7 @@ body {
     margin: 0;
     padding: 0;
     font-family: "Inter", sans-serif;
-    background-image: url("https://www.transparenttextures.com/patterns/45-degree-fabric-light.png");
+    /* background-image: url("https://www.transparenttextures.com/patterns/45-degree-fabric-light.png"); */
 }
 #slider {
     position: fixed;
@@ -83,15 +119,83 @@ body {
 #file-dropdown button {
     padding: 6px 16px !important;
 }
+#format-dropdown {
+    display: none;
+    position: absolute;
+    top: 24px;
+    left: 109px;
+    background: var(--bottom-bar-color);
+    border: 1px solid #d8d3d3;
+    border-radius: 4px;
+    padding: 8px 20px 8px 6px;
+    z-index: 1;
+    margin-top: 32px;
+}
+#format-dropdown button {
+    padding: 6px 16px !important;
+}
 select {
+    appearance: none;
     margin-top: auto;
     margin-bottom: auto;
     height: 32px;
-    padding: 4px 16px;
+    padding: 4px 26px;
     border-radius: 4px;
     border: none;
     background: var(--bottom-bar-color);
     color: var(--text-color);
+
+    overflow: hidden;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+#about {
+    display: none;
+    width: 500px;
+    position: fixed;
+    left: 50%;
+    top: 30%;
+    transform: translate(-50%, 0);
+    background: #323232;
+    color: #fff;
+    box-shadow: 0px 1px 9px 2px #1515158f;
+    border-radius: 8px;
+    padding: 20px 20px 20px 6px;
+    z-index: 1;
+}
+#about p {
+    padding-left: 20px;
+    padding-right: 20px;
+    font-size: 13px;
+}
+#about h2 {
+    padding: 20px;
+    margin: 0;
+}
+#about .main-pic {
+    padding-left: 6px;
+    width: 64px;
+}
+#close-button {
+    background: none;
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    border: none;
+    position: absolute;
+    filter: invert(1);
+    top: 12px;
+    right: 12px;
+}
+.close-icon {
+    width: 20px !important;
+    transition: transform 0.3s;
+}
+.close-icon:hover {
+    cursor: pointer;
+    transform: rotate(90deg);
 }
 .menu_selector {
     margin-top: auto;
@@ -133,7 +237,7 @@ select:hover {
     overflow: hidden !important;
 }
 .cm-s-default { font-size: 18px }
-.cm-s-default { font-family: "Inter", "Arial", sans-serif }
+.cm-s-default { font-family: "Inter", sans-serif }
 .cm-s-default .cm-header {
     color: black;
     font-weight: normal;
@@ -232,7 +336,7 @@ right {
     cursor: pointer;
 }
 .inverted img {
-    filter: invert(0.5);
+    filter: invert(0.7);
 }
 .paper {
     background: var(--background-color) !important;
@@ -309,16 +413,16 @@ right {
     cursor: pointer;
 }
 .btn-edit {
-    background: #f6f6f6 !important;
-    border: 1px solid #dcdcdc00 !important;
-    color: #a9a9a9 !important;
+    background: var(--bottom-bar-color) !important;
+    border: 1px solid #dcdcdc !important;
+    color: #9f9f9f !important;
 }
 .btn-edit:hover {
     cursor: pointer;
-    border: 1px solid #b9b9b9 !important;
+    border: 1px solid #a3a3a3 !important;
 }
 .btn-edit img {
-    filter: opacity(0.5);
+    filter: opacity(0.3);
 }
 #btn-preview p {
     width: 55px;
@@ -330,13 +434,13 @@ right {
 #info {
     position: fixed;
     bottom: 0;
-    right: 0;
+    left: 0;
     padding: 8px 10px;
     font-size: 13px;
 }
 #info p {
-    font-weight: bold;
-    padding: 10px 16px;
+    /* font-weight: bold; */
+    padding: 10px 10px;
     border-radius: 4px;
 }
 #popup {
@@ -350,10 +454,14 @@ right {
     bottom: 12px;
     left: 10px;
     z-index: 100;
-    background-color: var(--bottom-bar-color);
+    background-color: #fff;
     padding: 10px 16px;
     border-radius: 30px;
-    border: 2px solid #68e10b;
+    border: 3px solid #0852c2;
+}
+hr {
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 p {
     margin: 0;

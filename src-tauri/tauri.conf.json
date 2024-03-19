@@ -27,21 +27,24 @@
       },
       "fs": {
         "all": true,
-        "copyFile": false,
-        "createDir": false,
-        "exists": false,
-        "readDir": false,
+        "copyFile": true,
+        "createDir": true,
+        "exists": true,
+        "readDir": true,
         "readFile": true,
-        "removeDir": false,
-        "removeFile": false,
-        "renameFile": false,
-        "scope": ["$TEMP/*", "$APP/*", "$RESOURCE/*"],
+        "removeDir": true,
+        "removeFile": true,
+        "renameFile": true,
+        "scope": ["$TEMP/*", "$APP/*", "$RESOURCE/*", "$RESOURCE/css_themes/*"],
         "writeFile": true
       },
       "path": {
         "all": true
       },
       "os": {
+        "all": true
+      },
+      "protocol": {
         "all": true
       }
     },
@@ -53,6 +56,10 @@
         "icons/128.png",
         "icons/256.png",
         "icons/icon.ico"
+      ],
+      "resources": [
+        "css_themes/dracula.css",
+        "css_themes/default.css"
       ],
       "identifier": "com.markdown-editor.dev",
       "targets": "all"
@@ -70,7 +77,7 @@
         "title": "Editor Documente",
         "width": 900,
         "height": 1600,
-        "maximized": false
+        "maximized": true
       }
     ]
   }

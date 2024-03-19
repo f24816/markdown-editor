@@ -9,6 +9,7 @@ const { tempdir } = window.__TAURI__.os;
 
 // Establsih global variables
 var PREVIEW_MODE = false;
+var landscape = false;
 
 // Enable hard breaks for the markdown renderer
 marked.setOptions({
@@ -39,9 +40,12 @@ document.getElementById("btn-preview").addEventListener("click", function () {
         }
 
         document.getElementById("btn-preview").classList.add("btn-edit");
-        document.getElementById("preview").innerHTML = marked(
-            editor.getValue()
-        );
+
+        let renderd = marked(editor.getValue());
+        // Replace all <a> tags with target="_blank"
+        renderd = renderd.replace(/<a/g, '<a target="_blank"');
+
+        document.getElementById("preview").innerHTML = renderd
         document.getElementById("preview").style.display = "block";
         editor.getWrapperElement().style.display = "none";
     }
@@ -49,37 +53,7 @@ document.getElementById("btn-preview").addEventListener("click", function () {
 
 // Generate HTML to send to the PDF renderer.
 document.getElementById("btn-export").addEventListener("click", function () {
-    // BUG: Sometimes it doesn't export the file.
-    // This workaround doesen't seem to work.
-    document.getElementById("preview").innerHTML = marked(editor.getValue());
-
-    // Define HTML boilerplate
-    begining = `
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <style>
-  body {
-    font-family: "Arial", sans-serif;
-  }
-  </style>
-</head>
-<body>
-  `;
-    end = `
-</body>
-</html>
-  `;
-
-    // Get the preview element
-    var element = document.getElementById("preview");
-    // Combine to form a valid HTML file
-    var html = begining + element.outerHTML + end;
-    // Store the HTML file in the temp directory
-    // call the function from export.js
-    getTempDir(html);
-
+    exportMain(landscape);
 });
 
 // Create codemirror editor

@@ -9,8 +9,12 @@
 - [x] homepage
 - [x] inject css in pdf
 - [x] save notifications
-- [x] dark mode
-- [  ] keep CSS when exporting to pdf
+- [  ] dark mode
+- [  ] theme selection
+- [x] keep CSS when exporting to pdf
+- [  ] implement all the formating
+- [  ] new file button
+- [  ] format lanscape/portrait
 
 ## Improvements
 - [x] bold/italic text better
@@ -18,11 +22,8 @@
 - [x] improve word bold/italic
 - [x] add icons
 - [x] improve layout for menus and buttons
-- [  ] feedback/loading
+- [x] image alignment and size
 - [  ] template selection
-- [  ] theme selection
-- [  ] image alignment and size
-- [  ] format lanscape/portrait
 
 ## Future Possible Features
 

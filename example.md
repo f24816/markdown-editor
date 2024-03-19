@@ -1,14 +1,11 @@
-<center><h1>Isaac Newton🔬</h1></center>
+<center><h1>Isaac Newton</h1></center>
 
 <center>Physicist, Mathematician, Cambridge professor.</center>
 
 ---
 
-<div id="webaddress">
-<a href="isaac@applesdofall.org">isaac@applesdofall.org</a>
-| <a href="http://en.wikipedia.org/wiki/Isaac_Newton">My wikipedia page</a>
-</div>
-<br>
+- [Mail](isaac@applesdofall.org)
+- [Wikipedia](http://en.wikipedia.org/wiki/Isaac_Newton)
 
 ## Currently
 

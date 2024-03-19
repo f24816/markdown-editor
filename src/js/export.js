@@ -1,4 +1,39 @@
-async function getTempDir(html) {
+async function exportMain(landscape) {
+
+    // BUG: Sometimes it doesn't export the file.
+    // This workaround doesen't seem to work.
+    document.getElementById("preview").innerHTML = marked(editor.getValue());
+
+    // We can insert CSS by writing a diferent file to the temp directory and then referencing it in the HTML file.
+    const css = await saveCSS("css_themes/dracula.css");
+    console.log(css);
+
+    // Get the preview element
+    var element = document.getElementById("preview");
+    // Combine to form a valid HTML file
+
+    // Define HTML boilerplate
+    html = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+    <meta charset="utf-8">
+    <style>
+    ${css}
+    </style>
+    </head>
+    <body>
+    ${element.outerHTML}
+    </body>
+    </html>
+    `;
+
+    // Store the HTML file in the temp directory
+    // call the function from export.js
+    saveTempDir(landscape, html);
+}
+
+async function saveTempDir(landscape, html) {
     try {
         const tempDirPath = await tempdir();
         let tempFilePath = `${tempDirPath}file.html`;
@@ -33,6 +68,7 @@ async function getTempDir(html) {
 
         // Invoke the command
         invoke("generate_pdf", {
+            landscape: landscape,
             input: tempFilePath,
             output: await selection,
         })
@@ -59,5 +95,16 @@ async function getTempDir(html) {
     } catch (error) {
         // Show error in console
         console.error("Error:", error);
+    }
+}
+
+async function saveCSS(css_path, callback){
+    try {
+        const content = await invoke("read_resource", { name: css_path });
+        return content; // Assuming content is a string
+    } catch (error) {
+        // Show error in console
+        console.error("Error:", error);
+        return "An error occurred"; // Return a string indicating an error occurred
     }
 }
