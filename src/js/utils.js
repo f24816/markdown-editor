@@ -15,7 +15,6 @@ theme.onclick = function(e) {
 document.getElementById('interact-file').addEventListener('click', function() {
     document.getElementById('file-dropdown').style.display = 'block';
 });
-
 document.addEventListener('click', function(event) {
     var fileDropdown = document.getElementById('file-dropdown');
     var target = event.target;
@@ -23,11 +22,11 @@ document.addEventListener('click', function(event) {
         fileDropdown.style.display = 'none';
     }
 });
+
 // Open format dialog
 document.getElementById('interact-format').addEventListener('click', function() {
     document.getElementById('format-dropdown').style.display = 'block';
 });
-
 document.addEventListener('click', function(event) {
     var fileDropdown = document.getElementById('format-dropdown');
     var target = event.target;
@@ -40,7 +39,6 @@ document.addEventListener('click', function(event) {
 document.getElementById('interact-about').addEventListener('click', function() {
     document.getElementById('about').style.display = 'block';
 });
-
 document.getElementById('close-button').addEventListener('click', function() {
     document.getElementById('about').style.display = 'none';
 });

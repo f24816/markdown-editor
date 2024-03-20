@@ -9,11 +9,11 @@
 - [x] homepage
 - [x] inject css in pdf
 - [x] save notifications
+- [x] keep CSS when exporting to pdf
+- [x] implement all the formating
+- [x] new file button
 - [  ] dark mode
 - [  ] theme selection
-- [x] keep CSS when exporting to pdf
-- [  ] implement all the formating
-- [  ] new file button
 - [  ] format lanscape/portrait
 
 ## Improvements
@@ -23,7 +23,6 @@
 - [x] add icons
 - [x] improve layout for menus and buttons
 - [x] image alignment and size
-- [  ] template selection
 
 ## Future Possible Features
 

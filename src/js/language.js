@@ -2,6 +2,7 @@
 var currentlanguage = 'ro';
 
 // BUG: This function needs to be called once to work
+// BUG: Language is not respected between pages
 changelang();
 
 // Get the value of selected language from <select> element

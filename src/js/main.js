@@ -76,6 +76,7 @@ if (data == "true") {
 
 // Select file
 function selectFileDialog() {
+    document.getElementById('file-dropdown').style.display = 'none';
     const selection = open({
         multiple: false,
         filters: [
@@ -117,6 +118,7 @@ function selectFileDialog() {
 
 // Save file
 function saveFileDialog() {
+    document.getElementById('file-dropdown').style.display = 'none';
     const selection = save({
         filters: [
             {
@@ -150,9 +152,28 @@ function saveFileDialog() {
         });
 }
 
+function newFile() {
+    document.getElementById("title").innerHTML = "New Document";
+    // Delete everythin from the opened editor
+    editor.setValue("");
+    document.getElementById('file-dropdown').style.display = 'none';
+}
+
 // -------------------------------------------
 // --------- Keybindings for editor ----------
 // -------------------------------------------
+
+editor.addKeyMap({
+    "Ctrl-S": function () {
+        saveFileDialog();
+    },
+});
+
+editor.addKeyMap({
+    "Ctrl-O": function () {
+        selectFileDialog();
+    },
+});
 
 // Generic formating algorithm for bold, italic, etc.
 function genericFormat(editor, string, length) {
@@ -221,7 +242,7 @@ document.getElementById("btn-bold").addEventListener("click", function () {
 });
 
 editor.addKeyMap({
-    "Ctrl-B": function (cm) {
+    "Ctrl-B": function (editor) {
         // Call generic formating algorithm for italic
         genericFormat(editor, "**", 2);
     },
@@ -392,18 +413,101 @@ function leftText(editor) {
     }
 }
 
+document.getElementById("btn-list-bullet").addEventListener("click", function () {
+    addBullet(editor, "- ");
+});
+
+function addBullet(editor, string) {
+    var selection = editor.getSelection();
+
+    // Split selection into lines
+    var selectionLines = selection.split('\n');
+
+    // Keep track if we are removing or adding bullets
+    var isRemoving = selectionLines[0].trim().startsWith(string);
+
+    // Loop through lines
+    for(var i = 0; i < selectionLines.length; i++) {
+        // Get the line
+        var line = selectionLines[i];
+
+        // If removing bullets
+        if(isRemoving) {
+            line = line.replace(string, '');
+        }
+        // If adding bullets
+        else {
+            line = string + line;
+        }
+
+        // Update the line in the array
+        selectionLines[i] = line;
+    }
+
+    // Join with newline and update editor
+    editor.replaceSelection(selectionLines.join('\n'));
+}
+
+editor.addKeyMap({
+    "Shift-Ctrl-L": function (editor) {
+        addBullet(editor, "- ");
+    },
+});
+
+document.getElementById("btn-list-numbered").addEventListener("click", function () {
+    addNumbered(editor);
+});
+
+function addNumbered(editor) {
+    var selection = editor.getSelection();
+
+    // Split selection into lines
+    var selectionLines = selection.split('\n');
+
+    // Keep track if we are removing or adding bullets
+    var isRemoving = selectionLines[0].trim().startsWith(string);
+
+    // Loop through lines
+    for(var i = 0; i < selectionLines.length; i++) {
+        var number = i + 1;
+        var string = number + ". ";
+
+        // Get the line
+        var line = selectionLines[i];
+
+        // If removing bullets
+        if(isRemoving) {
+            line = line.replace(string, '');
+        }
+        // If adding bullets
+        else {
+            line = string + line;
+        }
+
+        // Update the line in the array
+        selectionLines[i] = line;
+    }
+
+    // Join with newline and update editor
+    editor.replaceSelection(selectionLines.join('\n'));
+}
+
+editor.addKeyMap({
+    "Ctrl-Alt-L": function (editor) {
+        addNumbered(editor);
+    },
+});
+
 // Heading 1
 function genericHeading(editor, string) {
     var cursor = editor.getCursor();
     var line = editor.getLine(cursor.line);
     // Check if the line already starts with a heading
     if (line.startsWith(string)) {
-        console.log("Remove heading");
         // Remove the first characters of the line up to the first space
         editor.replaceRange("", { line: cursor.line, ch: 0 }, { line: cursor.line, ch: line.indexOf(" ") + 1 });
         return;
     } if (line.startsWith("#")) {
-        console.log("Remove heading");
         // Remove the first characters of the line up to the first space
         editor.replaceRange("", { line: cursor.line, ch: 0 }, { line: cursor.line, ch: line.indexOf(" ") + 1 });
         // Add level 1 heading to the line
@@ -424,31 +528,31 @@ editor.addKeyMap({
 });
 
 editor.addKeyMap({
-    "Ctrl-2": function (cm) {
+    "Ctrl-2": function (editor) {
         genericHeading(editor, "## ");
     },
 });
 
 editor.addKeyMap({
-    "Ctrl-3": function (cm) {
+    "Ctrl-3": function (editor) {
         genericHeading(editor, "### ");
     },
 });
 
 editor.addKeyMap({
-    "Ctrl-4": function (cm) {
+    "Ctrl-4": function (editor) {
         genericHeading(editor, "#### ");
     },
 });
 
 editor.addKeyMap({
-    "Ctrl-5": function (cm) {
+    "Ctrl-5": function (editor) {
         genericHeading(editor, "##### ");
     },
 });
 
 editor.addKeyMap({
-    "Ctrl-6": function (cm) {
+    "Ctrl-6": function (editor) {
         genericHeading(editor, "###### ");
     },
 });

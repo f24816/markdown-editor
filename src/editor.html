@@ -21,7 +21,9 @@
                     <h5 id="title" class="button">New Document</h5>
                     <div id="home-actions">
                         <!-- <p id="interact-file">File</p> -->
-                        <button id="interact-file" class="button">File</button>
+                        <button id="interact-file" class="button bilanguage"
+                        data-en='File'
+                        data-ro='Fișier'></button>
                         <div id="file-dropdown">
                             <button onclick="newFile()" class='bilanguage button'
                             data-en='New'
@@ -37,14 +39,23 @@
                             </button><br>
                         </div>
                         <div id="format-dropdown">
-                            <button onclick="sizePortrait()">Portrait</button><br>
-                            <button onclick="sizeLandscape()">Landscape</button><br>
+                            <button onclick="sizePortrait()" class='bilanguage button'
+                            data-en='Portrait'
+                            data-ro='Portret'></button><br>
+                            <button onclick="sizeLandscape()" class='bilanguage button'
+                            data-en='Landscape'
+                            data-ro='Peisaj'></button><br>
                         </div>
-                        <!-- <p>Language</p> -->
-                        <p id="interact-format" class="button">Format</p>
+                        <p id="interact-format" class='button bilanguage'
+                        data-en='Paper'
+                        data-ro='Foaie'></p>
                         <button id="btn-export" class="button">Export</button>
-                        <p class="button">Theme</p>
-                        <p id="interact-about" class="button">About</p>
+                        <p class='bilanguage button'
+                        data-en='Theme'
+                        data-ro='Temă'></p>
+                        <p id="interact-about" class='bilanguage button'
+                        data-en='About'
+                        data-ro='Despre'></p>
                     </div>
                 </div>
                 <div id="main-actions">
@@ -77,7 +88,6 @@
                     <button class="btn-icon" id="btn-align-left"><img src="icons/format_align_left.svg"></button>
                     <button class="btn-icon" id="btn-align-center"><img src="icons/format_align_center.svg"></button>
                     <button class="btn-icon" id="btn-align-right"><img src="icons/format_align_right.svg"></button>
-                    <button class="btn-icon" id="btn-checklist"><img src="icons/checklist.svg"></button>
                 </div>
             </div>
             <div id="info">
