@@ -5,7 +5,7 @@ async function exportMain(landscape) {
     document.getElementById("preview").innerHTML = marked(editor.getValue());
 
     // We can insert CSS by writing a diferent file to the temp directory and then referencing it in the HTML file.
-    const css = await saveCSS("css_themes/dracula.css");
+    const css = await saveCSS("css_themes/default.css");
     console.log(css);
 
     // Get the preview element

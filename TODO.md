@@ -15,6 +15,7 @@
 - [  ] dark mode
 - [  ] theme selection
 - [  ] format lanscape/portrait
+- [  ] make a save as button
 
 ## Improvements
 - [x] bold/italic text better

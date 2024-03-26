@@ -325,7 +325,7 @@ function insertImage(editor) {
     }
 
     // Insert image
-    editor.replaceSelection('<img src="' + link + '" width="400">');
+    editor.replaceSelection('<img src="' + link + '" width="400"></img>');
 }
 
 // Code block
